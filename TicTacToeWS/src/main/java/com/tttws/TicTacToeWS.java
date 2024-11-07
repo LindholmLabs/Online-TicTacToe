@@ -14,7 +14,7 @@ import jakarta.jws.soap.SOAPBinding;
 
 /**
  *
- * @author petar
+ * @author adam
  */
 
 @WebService(serviceName = "TicTacToeWebService")
