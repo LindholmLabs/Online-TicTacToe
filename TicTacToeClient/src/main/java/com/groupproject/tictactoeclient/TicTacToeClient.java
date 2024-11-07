@@ -4,8 +4,11 @@
 
 
 package com.groupproject.tictactoeclient;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.tttws.TicTacToeWS;
 import com.tttws.TicTacToeWebService;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -17,5 +20,10 @@ public class TicTacToeClient {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
+        
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+        }
     }
 }
