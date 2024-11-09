@@ -7,6 +7,7 @@ package com.groupproject.tictactoeclient;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.groupproject.tictactoeclient.ContentPanes.MainContentPanel;
 import com.groupproject.tictactoeclient.ContentPanes.StartPanel;
+import com.groupproject.tictactoeclient.ContentPanes.register;
 import com.tttws.TicTacToeWS;
 import com.tttws.TicTacToeWebService;
 import javax.swing.JFrame;
@@ -48,8 +49,8 @@ public class TicTacToeClient {
         frame = new JFrame("TicTacToe"); // Create new Swing window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
-        
-        showPanel(new StartPanel(this));
+         showPanel(new register(this));
+        //showPanel(new StartPanel(this));
         
         frame.setVisible(true);
     }
