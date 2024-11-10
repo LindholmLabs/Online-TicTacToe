@@ -4,8 +4,8 @@
  */
 package com.groupproject.tictactoeclient.ContentPanes;
 import com.groupproject.tictactoeclient.TicTacToeClient;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import java.awt.event.*;
 
 import javax.swing.*;
 /**
@@ -27,8 +27,8 @@ public class login extends JPanel {
         JLabel passwordLabel = new JLabel("password");
         
         //Create the username and password text fields
-        JTextField usernameTextField = new JTextField();
-        JTextField passwordTextField = new JTextField();
+        JTextField usernameTextField = new JTextField(20);
+        JPasswordField passwordTextField = new JPasswordField(20);
         
         //Create a checkbox to show the password
         JCheckBox showPassword = new JCheckBox("show password");
@@ -67,13 +67,29 @@ public class login extends JPanel {
         
         
         
-//        //Login Button Action - check the entries of the textFields 
-//        loginButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                client.showPanel(new login(client));
-//            }
-//        });
+       // Login Button Action - check the entries of the textFields 
+        loginButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               client.showPanel(new login(client));
+
+
+           }
+       });
+        
+        //Item listener to check if the showPassword checkbox has been selected
+        //If selected show the password and if not display the password as **** normal
+        char defaultPassword = passwordTextField.getEchoChar();
+        // Login Button Action - check the entries of the textFields 
+        showPassword.addItemListener(new ItemListener() {
+           public void itemStateChanged(ItemEvent e) {
+              if (e.getStateChange() == ItemEvent.SELECTED) {
+                  passwordTextField.setEchoChar((char) 0); 
+                } else {
+            passwordTextField.setEchoChar(defaultPassword);
+              }
+           }
+       });
         
         
         
