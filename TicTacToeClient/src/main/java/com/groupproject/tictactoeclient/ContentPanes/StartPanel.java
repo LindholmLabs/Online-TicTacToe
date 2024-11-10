@@ -13,7 +13,7 @@ import javax.swing.SpringLayout;
 
 /**
  *
- * @author Willi
+ * @author Adam 
  */
 public class StartPanel extends JPanel{
     public StartPanel(TicTacToeClient client) {
