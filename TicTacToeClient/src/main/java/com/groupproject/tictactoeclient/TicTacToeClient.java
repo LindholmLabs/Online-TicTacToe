@@ -49,8 +49,8 @@ public class TicTacToeClient {
         frame = new JFrame("TicTacToe"); // Create new Swing window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
-         showPanel(new register(this));
-        //showPanel(new StartPanel(this));
+         //showPanel(new register(this));
+        showPanel(new StartPanel(this));
         
         frame.setVisible(true);
     }
