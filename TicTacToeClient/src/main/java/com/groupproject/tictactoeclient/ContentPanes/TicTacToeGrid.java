@@ -12,7 +12,7 @@ import javax.swing.border.LineBorder;
 
 /**
  *
- * @author Willi
+ * @author William
  */
 public class TicTacToeGrid extends JPanel {
     JButton[][] grid = new JButton[3][3];

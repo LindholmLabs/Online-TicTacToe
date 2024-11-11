@@ -18,13 +18,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author Willi
+ * @author William
  */
 public class TicTacToeClient {
     private static TicTacToeClient client;
     private static TicTacToeWebService service;
-    private static TicTacToeWS proxy;
+    public static TicTacToeWS proxy;
     private JFrame frame;
+    public String UID;
 
     public static void main(String[] args) {
         // Enable flatlaf dark theme
@@ -38,6 +39,10 @@ public class TicTacToeClient {
                 JOptionPane.ERROR_MESSAGE
             );
         }
+        
+        // Initialize SOAP interface
+        service = new TicTacToeWebService();
+        proxy = service.getTicTacToeWSPort();
         
         // Initalize UI
         client = new TicTacToeClient();

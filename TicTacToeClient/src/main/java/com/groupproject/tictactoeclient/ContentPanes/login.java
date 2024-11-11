@@ -4,6 +4,7 @@
  */
 package com.groupproject.tictactoeclient.ContentPanes;
 import com.groupproject.tictactoeclient.TicTacToeClient;
+import java.awt.Color;
 
 import java.awt.event.*;
 
@@ -30,15 +31,26 @@ public class login extends JPanel {
         JTextField usernameTextField = new JTextField(20);
         JPasswordField passwordTextField = new JPasswordField(20);
         
+        // Back button
+        JButton backButton = new JButton("Back");
+        
         //Create a checkbox to show the password
         JCheckBox showPassword = new JCheckBox("show password");
         
+        //Create error message if login is not correct
+        JLabel loginErrorLabel = new JLabel("Wrong username or password");
+        loginErrorLabel.setForeground(Color.red);
+        loginErrorLabel.setVisible(false);
+
+        // Add components to panel
         add(loginButton);
         add(usernameLabel);
         add(passwordLabel);
         add(usernameTextField);
         add(passwordTextField);
         add(showPassword);
+        add(backButton);
+        add(loginErrorLabel);
         
         
         // UsernameLabel constraints
@@ -65,33 +77,51 @@ public class login extends JPanel {
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, loginButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
         layout.putConstraint(SpringLayout.NORTH, loginButton, 20, SpringLayout.SOUTH, showPassword);
         
+        //Back button constraint
+        layout.putConstraint(SpringLayout.WEST, backButton, 20, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, backButton, 20, SpringLayout.NORTH, this);
+        
+        //Error label constraint
+        layout.putConstraint(SpringLayout.EAST, loginErrorLabel, -20, SpringLayout.EAST, this);
+        layout.putConstraint(SpringLayout.NORTH, loginErrorLabel, 20, SpringLayout.NORTH, this);
         
         
-       // Login Button Action - check the entries of the textFields 
+        
+        // Login Button Action - check the entries of the textFields 
         loginButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               client.showPanel(new login(client));
-
-
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.UID = String.valueOf(client.proxy.login(usernameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
+                System.out.println("UID = " + client.UID);
+                
+                if (Integer.parseInt(client.UID) == -1) {
+                    loginErrorLabel.setVisible(true);
+                } else {
+                    client.showPanel(new MainContentPanel(client));
+                }
            }
-       });
+        });
         
         //Item listener to check if the showPassword checkbox has been selected
         //If selected show the password and if not display the password as **** normal
         char defaultPassword = passwordTextField.getEchoChar();
         // Login Button Action - check the entries of the textFields 
         showPassword.addItemListener(new ItemListener() {
-           public void itemStateChanged(ItemEvent e) {
-              if (e.getStateChange() == ItemEvent.SELECTED) {
-                  passwordTextField.setEchoChar((char) 0); 
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    passwordTextField.setEchoChar((char) 0); 
                 } else {
-            passwordTextField.setEchoChar(defaultPassword);
-              }
-           }
-       });
+                    passwordTextField.setEchoChar(defaultPassword);
+                }
+            }
+        });
         
-        
-        
+        // Back button listener
+        backButton.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.showPanel(new StartPanel(client));
+            }
+        });
     }
 }

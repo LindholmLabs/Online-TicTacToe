@@ -14,7 +14,7 @@ import javax.swing.SpringLayout;
 
 /**
  *
- * @author Willi
+ * @author William
  * Contains the content visible in the main program.
  */
 public class MainContentPanel extends JPanel {

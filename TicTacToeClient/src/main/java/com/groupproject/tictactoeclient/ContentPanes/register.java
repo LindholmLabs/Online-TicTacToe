@@ -64,7 +64,9 @@ public class register extends JPanel {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.showPanel(new StartPanel(client));
+                client.UID = client.proxy.register(usernameField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText());
+                System.out.println(client.UID);
+                client.showPanel(new MainContentPanel(client));
             }
         });
     }
