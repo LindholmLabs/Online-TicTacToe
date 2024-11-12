@@ -13,16 +13,25 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+import javax.swing.Timer;
 
 /**
  *
- * @author William
+ * @author William and Adam 
  * Contains the content visible in the main program.
  */
+
+        
 public class MainContentPanel extends CustomPanel {
+    
     
     TicTacToeClient client;
     JList<String> openGamesList;
+    
+    private JLabel gameTimerLabel;
+    private Timer timer;
+    private int remainingTime;
+
     
     public MainContentPanel(TicTacToeClient client) {
         
@@ -40,12 +49,12 @@ public class MainContentPanel extends CustomPanel {
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
         TicTacToeGrid grid = new TicTacToeGrid();
         JLabel gameStatusLabel = new JLabel();
-        JLabel gameTimerLabel = new JLabel();
+        gameTimerLabel = new JLabel();
         JButton viewScoreButton = new JButton("View Personal Score");
         
         // set mock data for labels:
         gameStatusLabel.setText("Opponents turn");
-        gameTimerLabel.setText("12m 32s");
+        gameTimerLabel.setText("15m 0s");
 
         
         // Add buttons to panel
@@ -100,6 +109,9 @@ public class MainContentPanel extends CustomPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 client.proxy.newGame(Integer.parseInt(client.UID));
+                
+                //start countdown when create game
+                startTimer();
             }
         });
     }
@@ -113,4 +125,40 @@ public class MainContentPanel extends CustomPanel {
         this.revalidate();
         this.repaint();
     }
+    
+    
+    private void startTimer()
+    {
+        //remaining time is 15 minutes
+        remainingTime = 1 * 60;
+                
+        //create timer that updates every 1 seconds i.e countdown clock
+        timer = new Timer(1000, new ActionListener(){
+            @Override 
+            public void actionPerformed(ActionEvent e) {
+                
+                //countdown time
+                remainingTime--;
+                
+                int minutes = remainingTime / 60;
+                int seconds = remainingTime % 60;
+                
+                String time = String.format("%02d:%02d", minutes, seconds);
+                
+                gameTimerLabel.setText(time);
+                
+                //need to implement when no one else joins the game 
+                //and the countdown is finished that the game is then deleted
+                //at the moment it just prints game finished
+                if(remainingTime <= 0) {
+                    timer.stop();
+                    gameTimerLabel.setText("Finished");
+                }
+            }
+        });
+           timer.start();
+    }
+    
+    
+    
 }
