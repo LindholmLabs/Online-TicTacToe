@@ -13,7 +13,7 @@ import javax.swing.*;
  *
  * @author adam
  */
-public class login extends JPanel {
+public class login extends CustomPanel {
     public login(TicTacToeClient client) {
     
         // Set panel layout to spring layout
@@ -123,5 +123,10 @@ public class login extends JPanel {
                 client.showPanel(new StartPanel(client));
             }
         });
+    }
+
+    @Override
+    public void refresh() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

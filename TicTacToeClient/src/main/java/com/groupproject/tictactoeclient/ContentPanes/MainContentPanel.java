@@ -19,8 +19,14 @@ import javax.swing.SpringLayout;
  * @author William
  * Contains the content visible in the main program.
  */
-public class MainContentPanel extends JPanel {
+public class MainContentPanel extends CustomPanel {
+    
+    TicTacToeClient client;
+    JList<String> openGamesList;
+    
     public MainContentPanel(TicTacToeClient client) {
+        
+        this.client = client;
         
         // Set panel layout to spring layout
         SpringLayout layout = new SpringLayout();
@@ -30,8 +36,7 @@ public class MainContentPanel extends JPanel {
         JButton createGameButton = new JButton("New Game");
         JButton scoreBoardButton = new JButton("Scoreboard");
         JButton joinGameButton = new JButton("Join Game");
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"}; // mock list
-        JList<String> openGamesList = new JList<>(items);
+        openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
         TicTacToeGrid grid = new TicTacToeGrid();
         JLabel gameStatusLabel = new JLabel();
@@ -90,9 +95,6 @@ public class MainContentPanel extends JPanel {
         layout.putConstraint(SpringLayout.EAST, viewScoreButton, -20, SpringLayout.EAST, this);
         
         
-        
-        
-        
         //Create game button action listener 
         createGameButton.addActionListener(new ActionListener() {
             @Override
@@ -100,7 +102,15 @@ public class MainContentPanel extends JPanel {
                 client.proxy.newGame(Integer.parseInt(client.UID));
             }
         });
-        
-        
+    }
+
+    @Override
+    public void refresh() {
+        System.out.println("Refreshing MainContentPanel");
+        var games = client.openGames.split(",");
+        System.out.println("Current Games: " + client.openGames);
+        openGamesList.setListData(games);
+        this.revalidate();
+        this.repaint();
     }
 }

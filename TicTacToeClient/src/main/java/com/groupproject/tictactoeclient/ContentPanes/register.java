@@ -16,7 +16,7 @@ import javax.swing.Box;
  *
  * Author: Luke
  */
-public class register extends JPanel {
+public class register extends CustomPanel {
     public register(TicTacToeClient client) {
         // Set the layout to BoxLayout for vertical alignment
          setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -69,5 +69,10 @@ public class register extends JPanel {
                 client.showPanel(new MainContentPanel(client));
             }
         });
+    }
+
+    @Override
+    public void refresh() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

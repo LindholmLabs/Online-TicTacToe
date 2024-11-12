@@ -15,7 +15,7 @@ import javax.swing.SpringLayout;
  *
  * @author Adam 
  */
-public class StartPanel extends JPanel{
+public class StartPanel extends CustomPanel {
     public StartPanel(TicTacToeClient client) {
         
         // Set panel layout to spring layout
@@ -55,5 +55,10 @@ public class StartPanel extends JPanel{
                 client.showPanel(new register(client));
             }
         });
+    }
+
+    @Override
+    public void refresh() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

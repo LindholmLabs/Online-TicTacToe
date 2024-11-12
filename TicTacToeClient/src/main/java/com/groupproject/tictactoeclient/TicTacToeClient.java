@@ -5,6 +5,7 @@
 
 package com.groupproject.tictactoeclient;
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.groupproject.tictactoeclient.ContentPanes.CustomPanel;
 import com.groupproject.tictactoeclient.ContentPanes.MainContentPanel;
 import com.groupproject.tictactoeclient.ContentPanes.StartPanel;
 import com.groupproject.tictactoeclient.ContentPanes.register;
@@ -25,7 +26,9 @@ public class TicTacToeClient {
     private static TicTacToeWebService service;
     public static TicTacToeWS proxy;
     private JFrame frame;
+    private CustomPanel CurrentPanel;
     public String UID;
+    public String openGames;
 
     public static void main(String[] args) {
         // Enable flatlaf dark theme
@@ -49,8 +52,6 @@ public class TicTacToeClient {
     }
     
     public TicTacToeClient() {
-        
-        
         frame = new JFrame("TicTacToe"); // Create new Swing window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -58,12 +59,20 @@ public class TicTacToeClient {
         showPanel(new StartPanel(this));
         
         frame.setVisible(true);
+        
+        Thread t1 = new Thread(new FetchGamesThread(this));
+        t1.start();
     }
     
-    public void showPanel(JPanel panel) {
+    public void showPanel(CustomPanel panel) {
         frame.getContentPane().removeAll(); // Clear current content
+        CurrentPanel = panel;
         frame.getContentPane().add(panel);  // Add new panel
         frame.revalidate();                 // Refresh the frame
         frame.repaint();
+    }
+    
+    public void refreshCurrentPanel() {
+        CurrentPanel.refresh();
     }
 }

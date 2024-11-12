@@ -389,6 +389,7 @@ public class TicTacToeWS {
      */
     @WebMethod(operationName = "showMyOpenGames")
     public String showMyOpenGames(@WebParam(name = "uid") int uid) {
+        System.out.println("Called showMyOpenGames()");
         String sqlCmd = "SELECT g.autokey, u.username, g.started FROM games g, users u WHERE g.p1 = " + uid + " AND g.p2 IS NULL AND g.p1 = u.autokey ORDER BY g.started ASC;";
         try {
             String result = dao.retrieve(sqlCmd);

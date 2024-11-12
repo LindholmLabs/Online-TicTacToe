@@ -14,7 +14,7 @@ import javax.swing.border.LineBorder;
  *
  * @author William
  */
-public class TicTacToeGrid extends JPanel {
+public class TicTacToeGrid extends CustomPanel {
     JButton[][] grid = new JButton[3][3];
     
     public TicTacToeGrid() {
@@ -32,5 +32,10 @@ public class TicTacToeGrid extends JPanel {
                 add(grid[row][col]);
             }
         }
+    }
+
+    @Override
+    public void refresh() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
