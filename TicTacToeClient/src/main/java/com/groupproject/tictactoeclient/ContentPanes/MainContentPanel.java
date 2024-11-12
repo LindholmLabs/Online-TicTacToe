@@ -5,6 +5,8 @@
 package com.groupproject.tictactoeclient.ContentPanes;
 
 import com.groupproject.tictactoeclient.TicTacToeClient;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -86,5 +88,19 @@ public class MainContentPanel extends JPanel {
         // View score button constraints
         layout.putConstraint(SpringLayout.SOUTH, viewScoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, viewScoreButton, -20, SpringLayout.EAST, this);
+        
+        
+        
+        
+        
+        //Create game button action listener 
+        createGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.proxy.newGame(Integer.parseInt(client.UID));
+            }
+        });
+        
+        
     }
 }
