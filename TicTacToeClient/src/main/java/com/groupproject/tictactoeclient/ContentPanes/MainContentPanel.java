@@ -130,7 +130,7 @@ public class MainContentPanel extends CustomPanel {
     private void startTimer()
     {
         //remaining time is 15 minutes
-        remainingTime = 1 * 60;
+        remainingTime = 15 * 60;
                 
         //create timer that updates every 1 seconds i.e countdown clock
         timer = new Timer(1000, new ActionListener(){
