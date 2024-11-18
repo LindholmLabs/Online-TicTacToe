@@ -50,7 +50,7 @@ public class MainContentPanel extends CustomPanel {
         TicTacToeGrid grid = new TicTacToeGrid();
         JLabel gameStatusLabel = new JLabel();
         gameTimerLabel = new JLabel();
-        JButton viewScoreButton = new JButton("View Personal Score");
+        JButton scoreButton = new JButton("View Personal Score");
         
         // set mock data for labels:
         gameStatusLabel.setText("Opponents turn");
@@ -65,7 +65,7 @@ public class MainContentPanel extends CustomPanel {
         add(grid);
         add(gameStatusLabel);
         add(gameTimerLabel);
-        add(viewScoreButton);
+        add(scoreButton);
         
         // Add sprint layout constraints
         // create game button constraints
@@ -100,8 +100,8 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.EAST, grid, -20, SpringLayout.EAST, this);
         
         // View score button constraints
-        layout.putConstraint(SpringLayout.SOUTH, viewScoreButton, -20, SpringLayout.SOUTH, this);
-        layout.putConstraint(SpringLayout.EAST, viewScoreButton, -20, SpringLayout.EAST, this);
+        layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
+        layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
         
         
         //Create game button action listener 
@@ -114,7 +114,23 @@ public class MainContentPanel extends CustomPanel {
                 startTimer();
             }
         });
+        
+        
+        scoreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               client.showPanel(new score(client));
+                
+                //start countdown when create game
+                startTimer();
+            }
+        });
     }
+        
+        
+    
+    
+    
 
     @Override
     public void refresh() {
