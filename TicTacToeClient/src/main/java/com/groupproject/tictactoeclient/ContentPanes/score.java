@@ -13,6 +13,7 @@ public class score extends CustomPanel {
 
         // Get the logged-in UID from the client
         String loggedInUID = client.UID; 
+        String loggedInUsername = client.username; 
         System.out.println("Logged-in UID: " + loggedInUID);
 
         // Panel to display the stats
@@ -61,13 +62,21 @@ public class score extends CustomPanel {
                     
                         // Logged-in player is Player 1
                         
+                       if (player1UID.equals(loggedInUsername)) {
+                        // Logged-in player is Player 1
                         if (gameStateInt == 1) { // Player 1 wins
                             wins++;
-                            System.out.println("Win is updated");
                         } else if (gameStateInt == 2) { // Player 2 wins
                             losses++;
-                            System.out.println("loss is updated");
                         }
+                    } else if (player2UID.equals(loggedInUsername)) {
+                        // Logged-in player is Player 2
+                        if (gameStateInt == 2) { // Player 2 wins
+                            wins++;
+                        } else if (gameStateInt == 1) { // Player 1 wins
+                            losses++;
+                        }
+                    }
                     
                        
                     
@@ -78,7 +87,7 @@ public class score extends CustomPanel {
             }
 
             // Display the result as a summary
-            statsLabel.setText(String.format("Player UID %s: Wins = %d, Losses = %d", loggedInUID, wins, losses));
+            statsLabel.setText(String.format("Player %s: Wins = %d, Losses = %d", loggedInUsername, wins, losses));
         } catch (Exception e) {
             // Catch any unexpected errors
             statsLabel.setText("An error occurred while calculating player stats.");

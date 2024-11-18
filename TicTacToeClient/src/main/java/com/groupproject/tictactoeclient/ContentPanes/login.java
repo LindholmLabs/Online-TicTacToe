@@ -91,6 +91,8 @@ public class login extends CustomPanel {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String username = usernameTextField.getText();  // Get the username
+                client.username = username; 
                 client.UID = String.valueOf(client.proxy.login(usernameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
                 System.out.println("UID = " + client.UID);
                 
