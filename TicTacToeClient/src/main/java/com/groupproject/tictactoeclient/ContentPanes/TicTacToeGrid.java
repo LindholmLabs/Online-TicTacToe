@@ -5,6 +5,7 @@
 package com.groupproject.tictactoeclient.ContentPanes;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,28 +15,26 @@ import javax.swing.border.LineBorder;
  *
  * @author William
  */
-public class TicTacToeGrid extends CustomPanel {
-    JButton[][] grid = new JButton[3][3];
-    
-    public TicTacToeGrid() {
-        
-        setLayout(new GridLayout(3, 3));
-        
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                grid[row][col] = new JButton("");
-                grid[row][col].setBackground(new Color(45, 45, 45));  // Dark gray for FlatLaf Dark theme
-                grid[row][col].setForeground(Color.WHITE);  // Set font color to white
-                grid[row][col].setOpaque(true);
-                grid[row][col].setBorder(new LineBorder(new Color(70, 70, 70), 1));  // Soft, light gray border
-                grid[row][col].setOpaque(true);
-                add(grid[row][col]);
+ class TicTacToeGrid extends JPanel {
+        public TicTacToeGrid(int rows, int cols) {
+            setLayout(new GridLayout(rows, cols, 5, 5));
+
+            for (int i = 0; i < rows * cols; i++) {
+                JButton button = new JButton();
+                button.setFont(new Font("Arial", Font.BOLD, 32));
+                add(button);
+
+                button.addActionListener(e -> {
+                    //need to add an if statment that checks the GID 
+                    button.setText("X");
+                    button.setEnabled(false); // prevents the player from clicking the same spot again
+                });
             }
         }
-    }
+    
 
-    @Override
     public void refresh() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-}
+
+ }

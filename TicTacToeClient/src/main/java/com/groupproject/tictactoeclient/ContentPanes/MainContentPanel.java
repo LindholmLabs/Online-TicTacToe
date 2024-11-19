@@ -220,20 +220,5 @@ public void refresh() {
         timer.start();
     }
 
-    class TicTacToeGrid extends JPanel {
-        public TicTacToeGrid(int rows, int cols) {
-            setLayout(new GridLayout(rows, cols, 5, 5));
-
-            for (int i = 0; i < rows * cols; i++) {
-                JButton button = new JButton();
-                button.setFont(new Font("Arial", Font.BOLD, 32));
-                add(button);
-
-                button.addActionListener(e -> {
-                    button.setText("X");
-                    button.setEnabled(false); // prevents the player from clicking the same spot again
-                });
-            }
-        }
-    }
+    
 }
