@@ -6,15 +6,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Class to display the score panel with player stats.
- */
+
 public class score extends CustomPanel {
     public score(TicTacToeClient client) {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
-        // Label to display stats
+        
         JLabel statsLabel = new JLabel();
         statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statsLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -25,16 +23,16 @@ public class score extends CustomPanel {
         JButton backButton = new JButton("Back");
         add(backButton);
 
-        // Position the statsLabel (centered horizontally, at the top)
+        
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, statsLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
         layout.putConstraint(SpringLayout.NORTH, statsLabel, 20, SpringLayout.NORTH, this);
 
-        // Position the backButton (bottom-left corner)
+        
         layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
 
         try {
-            // Call the leagueTable method to get all games
+            
             String leagueData = client.proxy.leagueTable();
             System.out.println("League Data: " + leagueData);
 
@@ -47,35 +45,35 @@ public class score extends CustomPanel {
                 return;
             }
 
-            // Split the result into rows
+            
             String[] games = leagueData.split("\n");
             int wins = 0;
             int losses = 0;
 
-            // Parse each game's data
+            
             for (String game : games) {
                 try {
-                    String[] columns = game.split(","); // Assuming data is comma-separated
+                    String[] columns = game.split(","); 
                     if (columns.length < 4) {
                         throw new IllegalArgumentException("Malformed row: " + game);
                     }
 
                     String player1UID = columns[1].trim(); // Player 1 UID
                     String player2UID = columns[2].trim(); // Player 2 UID
-                    String gameState = columns[3].trim();  // Game state as a string
+                    String gameState = columns[3].trim();  // Game state (change to a int later)
 
                     int gameStateInt = Integer.parseInt(gameState);
 
                     if (player1UID.equals(client.username)) {
-                        if (gameStateInt == 1) { // Player 1 wins
+                        if (gameStateInt == 1) { // player 1 wins and adds to the score
                             wins++;
-                        } else if (gameStateInt == 2) { // Player 2 wins
+                        } else if (gameStateInt == 2) { // player 2 wins and adds to the score
                             losses++;
                         }
                     } else if (player2UID.equals(client.username)) {
-                        if (gameStateInt == 2) { // Player 2 wins
+                        if (gameStateInt == 2) { // P2 wins
                             wins++;
-                        } else if (gameStateInt == 1) { // Player 1 wins
+                        } else if (gameStateInt == 1) { // P1 wins
                             losses++;
                         }
                     }

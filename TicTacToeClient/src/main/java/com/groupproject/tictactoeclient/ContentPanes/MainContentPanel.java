@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- * MainContentPanel contains the content visible in the main program.
- */
+
 public class MainContentPanel extends CustomPanel {
 
     TicTacToeClient client;
@@ -50,7 +48,7 @@ public class MainContentPanel extends CustomPanel {
         add(gameTimerLabel);
         add(scoreButton);
 
-        // SpringLayout constraints
+        
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
 
@@ -135,24 +133,22 @@ public class MainContentPanel extends CustomPanel {
         timer.start();
     }
 
-    /**
-     * A custom class for the TicTacToe grid.
-     */
+   
     class TicTacToeGrid extends JPanel {
         public TicTacToeGrid(int rows, int cols) {
-            setLayout(new GridLayout(rows, cols, 5, 5)); // Grid with 5px gaps
+            setLayout(new GridLayout(rows, cols, 5, 5)); // 
 
             for (int i = 0; i < rows * cols; i++) {
                 JButton button = new JButton();
-                button.setFont(new Font("Arial", Font.BOLD, 32)); // Large text for "X"
+                button.setFont(new Font("Arial", Font.BOLD, 32)); 
                 add(button);
 
-                // Add ActionListener for button clicks
+                
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         button.setText("X");
-                        button.setEnabled(false); // Disable the button after it's clicked
+                        button.setEnabled(false); // so player cant click again
                     }
                 });
             }

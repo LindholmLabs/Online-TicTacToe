@@ -8,12 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Class to display the scores of all users.
- */
+
 public class allscore extends CustomPanel {
     public allscore(TicTacToeClient client) {
-        // Set SpringLayout
+        
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
@@ -37,7 +35,7 @@ public class allscore extends CustomPanel {
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, this);
 
         // Set constraints for Back Button
-        layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this); // 10px above bottom
+        layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this); 
         layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
 
         // Populate stats area
@@ -55,10 +53,10 @@ public class allscore extends CustomPanel {
             String[] games = leagueData.split("\n");
             Map<String, int[]> playerStats = new HashMap<>();
 
-            // Parse each game's data
+           
             for (String game : games) {
                 try {
-                    String[] columns = game.split(","); // Assuming data is comma-separated
+                    String[] columns = game.split(","); //mabye change later depending if it shows up
                     if (columns.length < 4) {
                         throw new IllegalArgumentException("Malformed row: " + game);
                     }
@@ -69,16 +67,16 @@ public class allscore extends CustomPanel {
 
                     int gameStateInt = Integer.parseInt(gameState);
 
-                    // Update stats for Player 1
+                    // update the stats for Player one
                     playerStats.putIfAbsent(player1UID, new int[2]);
                     playerStats.putIfAbsent(player2UID, new int[2]);
 
-                    if (gameStateInt == 1) { // Player 1 wins
-                        playerStats.get(player1UID)[0]++; // Increment wins for Player 1
-                        playerStats.get(player2UID)[1]++; // Increment losses for Player 2
-                    } else if (gameStateInt == 2) { // Player 2 wins
-                        playerStats.get(player2UID)[0]++; // Increment wins for Player 2
-                        playerStats.get(player1UID)[1]++; // Increment losses for Player 1
+                    if (gameStateInt == 1) { // player 1 wins
+                        playerStats.get(player1UID)[0]++; // increment wins for Player 1
+                        playerStats.get(player2UID)[1]++; // increment losses for Player 2
+                    } else if (gameStateInt == 2) { // player 2 wins
+                        playerStats.get(player2UID)[0]++; // increment wins for Player 2
+                        playerStats.get(player1UID)[1]++; // increment losses for Player 1
                     }
 
                 } catch (Exception rowException) {
@@ -106,7 +104,7 @@ public class allscore extends CustomPanel {
             e.printStackTrace();
         }
 
-        // Back Button Listener
+        
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
