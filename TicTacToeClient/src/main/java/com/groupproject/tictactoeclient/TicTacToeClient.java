@@ -28,6 +28,7 @@ public class TicTacToeClient {
     private JFrame frame;
     private CustomPanel CurrentPanel;
     public String UID;
+    public String GID;
     public String username;
     public String openGames;
 
