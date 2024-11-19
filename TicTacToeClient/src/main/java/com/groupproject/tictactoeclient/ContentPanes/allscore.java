@@ -37,6 +37,14 @@ public class allscore extends CustomPanel {
         // Set constraints for Back Button
         layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this); 
         layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
+        
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Hello, going back!");
+                client.showPanel(new MainContentPanel(client));
+            }
+        });
 
         // Populate stats area
         try {
@@ -103,18 +111,10 @@ public class allscore extends CustomPanel {
             statsArea.setText("An error occurred while calculating player stats.");
             e.printStackTrace();
         }
-
-        
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                client.showPanel(new MainContentPanel(client));
-            }
-        });
     }
 
     @Override
     public void refresh() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }

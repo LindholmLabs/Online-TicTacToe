@@ -30,6 +30,14 @@ public class score extends CustomPanel {
         
         layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
+        
+        // Back Button Action
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.showPanel(new MainContentPanel(client));
+            }
+        });
 
         try {
             
@@ -90,18 +98,10 @@ public class score extends CustomPanel {
             statsLabel.setText("An error occurred while calculating player stats.");
             e.printStackTrace();
         }
-
-        // Back Button Action
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                client.showPanel(new MainContentPanel(client));
-            }
-        });
     }
 
     @Override
     public void refresh() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated method stub
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated method stub
     }
 }
