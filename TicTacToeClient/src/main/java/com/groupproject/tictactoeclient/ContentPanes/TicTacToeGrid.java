@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.groupproject.tictactoeclient.ContentPanes;
+import com.groupproject.tictactoeclient.TicTacToeClient;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,7 +17,9 @@ import javax.swing.border.LineBorder;
  * @author William
  */
  class TicTacToeGrid extends JPanel {
-        public TicTacToeGrid(int rows, int cols) {
+     TicTacToeClient client;
+        public TicTacToeGrid(TicTacToeClient client, int rows, int cols) {
+            this.client = client;
             setLayout(new GridLayout(rows, cols, 5, 5));
 
             for (int i = 0; i < rows * cols; i++) {
@@ -26,7 +29,10 @@ import javax.swing.border.LineBorder;
 
                 button.addActionListener(e -> {
                     //need to add an if statment that checks the GID 
-                    button.setText("X");
+                    //client.UID2 = client.proxy.leagueTable();
+                    if (client.UID.equals(client.HOST)){
+                        button.setText("X");
+                    }else{button.setText("O");}
                     button.setEnabled(false); // prevents the player from clicking the same spot again
                 });
             }

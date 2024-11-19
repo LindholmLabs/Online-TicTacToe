@@ -15,8 +15,6 @@ public class MainContentPanel extends CustomPanel {
     private Timer timer;
     private int remainingTime;
 
-    
-
     public MainContentPanel(TicTacToeClient client) {
         this.client = client;
 
@@ -30,7 +28,7 @@ public class MainContentPanel extends CustomPanel {
         JButton joinGameButton = new JButton("Join Game");
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
-        TicTacToeGrid grid = new TicTacToeGrid(3, 3); // A 3x3 TicTacToe grid
+        TicTacToeGrid grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
         JLabel gameStatusLabel = new JLabel();
         gameTimerLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
@@ -78,61 +76,53 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
 
         openGamesList.addListSelectionListener(e -> {
-        if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
-            String selectedGame = openGamesList.getSelectedValue();
-    
-         System.out.println("selected Game: " + selectedGame);
+            if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
+                String selectedGame = openGamesList.getSelectedValue();
 
-            String[] parts = selectedGame.split(" ");
-            if (parts.length >= 2) {
-                String gameID = parts[1];  // The GID is the second part
-                // Debug: Print the extracted GID
-                System.out.println("Extracted GID: " + gameID);
+                System.out.println("selected Game: " + selectedGame);
 
-                // Store the game ID to use in the joinGame action
-                client.GID = gameID;
-            } else {
-                // Handle cases where the format doesn't match
-                System.out.println("Invalid format for game entry: " + selectedGame);
-    }
-}
-});
+                String[] parts = selectedGame.split(" ");
+                if (parts.length >= 2) {
+                    String gameID = parts[1];  // The GID is the second part
+                    // Debug: Print the extracted GID
+                    System.out.println("Extracted GID: " + gameID);
 
+                    // Store the game ID to use in the joinGame action
+                    client.GID = gameID;
+                } else {
+                    // Handle cases where the format doesn't match
+                    System.out.println("Invalid format for game entry: " + selectedGame);
+                }
+            }
+        });
 
+        createGameButton.addActionListener(e -> {
+            client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
 
-       createGameButton.addActionListener(e -> {
-    client.proxy.newGame(Integer.parseInt(client.UID));  
-    
-    if (client.GID != null && !client.GID.isEmpty()) {
-        String newGameData = "Game " + client.GID + " Host: " + client.UID;  
-        if (client.openGames == null || client.openGames.isEmpty()) {
-            client.openGames = newGameData;  
-        } else {
-            client.openGames += "\n" + newGameData;  //seperates each new game
-        }
-    }
-    
-    System.out.println("New game added: " + client.openGames);
+            if (client.GID != null && !client.GID.isEmpty()) {
+                client.HOST = client.UID;
+                String newGameData = "Game " + client.GID + " Host: " + client.UID;
+                if (client.openGames == null || client.openGames.isEmpty()) {
+                    client.openGames = newGameData;
+                } else {
+                    client.openGames += "\n" + newGameData;  //seperates each new game
+                }
+            }
 
-    refresh();  // refresh the list to show if there is a new game added
-});
+            System.out.println("New game added: " + client.openGames);
 
-
-
-
-
+            refresh();  // refresh the list to show if there is a new game added
+        });
 
         joinGameButton.addActionListener(e -> {
-    // join the game using GID
-    if (client.GID != null) {
-        client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID));
-        startTimer();
-    } else {
-        System.out.println("no game selected.");
-    }
-});
-
-
+            // join the game using GID
+            if (client.GID != null) {
+                client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID));
+                startTimer();
+            } else {
+                System.out.println("no game selected.");
+            }
+        });
 
         scoreButton.addActionListener(e -> {
             client.showPanel(new score(client));
@@ -145,56 +135,44 @@ public class MainContentPanel extends CustomPanel {
         });
     }
 
-@Override
-public void refresh() {
-    System.out.println("Refreshing MainContentPanel");
-   // System.out.println("Raw client.openGames data: " + client.openGames);  // Debugging output
+    @Override
+    public void refresh() {
+        System.out.println("Refreshing MainContentPanel");
+        // System.out.println("Raw client.openGames data: " + client.openGames);  // Debugging output
 
-    // Check if openGames is empty/null, if there is nothin then display nothing in the box
-    if (client.openGames == null || client.openGames.isEmpty()) {
-        System.out.println("No games available.");
-        openGamesList.setListData(new String[0]); 
-    } else {
-        String[] rawGames = client.openGames.split("\n");
+        // Check if openGames is empty/null, if there is nothin then display nothing in the box
+        if (client.openGames == null || client.openGames.isEmpty()) {
+            System.out.println("No games available.");
+            openGamesList.setListData(new String[0]);
+        } else {
+            String[] rawGames = client.openGames.split("\n");
 
-        String[] formattedGames = new String[rawGames.length];
+            String[] formattedGames = new String[rawGames.length];
 
-        //extract the GID, Host, and time (mabye add time later or just data or just time)
-        for (int i = 0; i < rawGames.length; i++) {
-            String gameData = rawGames[i].trim();  
-            String[] parts = gameData.split(",");
+            //extract the GID, Host, and time (mabye add time later or just data or just time)
+            for (int i = 0; i < rawGames.length; i++) {
+                String gameData = rawGames[i].trim();
+                String[] parts = gameData.split(",");
 
-            if (parts.length == 3) {
-                String gameID = parts[0].trim();
-                String hostID = parts[1].trim();
-                String timestamp = parts[2].trim(); //use later mabye?
+                if (parts.length == 3) {
+                    String gameID = parts[0].trim();
+                    String hostID = parts[1].trim();
+                    String timestamp = parts[2].trim(); //use later mabye?
 
-                // formating the output in the box
-                formattedGames[i] = "Game " + gameID + " Host: " + hostID;
-            } else {
-                formattedGames[i] = " "; //set the box to nothing the format isnt right i.e if there is no host name
+                    // formating the output in the box
+                    formattedGames[i] = "Game " + gameID + " Host: " + hostID;
+                } else {
+                    formattedGames[i] = " "; //set the box to nothing the format isnt right i.e if there is no host name
+                }
             }
+
+            openGamesList.setListData(formattedGames);
         }
 
-        openGamesList.setListData(formattedGames);
+        //update the UI (not sure if this is how to do it, saw on stack overflow)
+        this.revalidate();
+        this.repaint();
     }
-
-    //update the UI (not sure if this is how to do it, saw on stack overflow)
-    this.revalidate();
-    this.repaint();
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void startTimer() {
         // Remaining time is 15 minutes
@@ -220,5 +198,4 @@ public void refresh() {
         timer.start();
     }
 
-    
 }

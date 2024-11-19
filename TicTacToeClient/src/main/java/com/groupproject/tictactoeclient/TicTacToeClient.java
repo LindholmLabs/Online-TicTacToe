@@ -29,8 +29,11 @@ public class TicTacToeClient {
     private CustomPanel CurrentPanel;
     public String UID;
     public String GID;
+    public String UID2;
+    public String HOST = " ";
     public String username;
     public String openGames;
+    
 
     public static void main(String[] args) {
         // Enable flatlaf dark theme
