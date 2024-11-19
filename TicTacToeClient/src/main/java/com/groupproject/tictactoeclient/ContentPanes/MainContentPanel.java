@@ -1,64 +1,47 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.groupproject.tictactoeclient.ContentPanes;
 
 import com.groupproject.tictactoeclient.TicTacToeClient;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
-import javax.swing.Timer;
+import javax.swing.*;
 
 /**
- *
- * @author William and Adam 
- * Contains the content visible in the main program.
+ * MainContentPanel contains the content visible in the main program.
  */
-
-        
 public class MainContentPanel extends CustomPanel {
-    
-    
+
     TicTacToeClient client;
     JList<String> openGamesList;
-    
+
     private JLabel gameTimerLabel;
     private Timer timer;
     private int remainingTime;
 
-    
     public MainContentPanel(TicTacToeClient client) {
-        
         this.client = client;
-        
-        // Set panel layout to spring layout
+
+        // Set panel layout to SpringLayout
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
-        
+
         // Create panel components
         JButton createGameButton = new JButton("New Game");
-        JButton scoreBoardButton = new JButton("Scoreboard");
+        JButton allscoreButton = new JButton("Scoreboard");
         JButton joinGameButton = new JButton("Join Game");
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
-        TicTacToeGrid grid = new TicTacToeGrid();
+        TicTacToeGrid grid = new TicTacToeGrid(3, 3); // A 3x3 TicTacToe grid
         JLabel gameStatusLabel = new JLabel();
         gameTimerLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
-        
-        // set mock data for labels:
-        gameStatusLabel.setText("Opponents turn");
+
+        // Set mock data for labels
+        gameStatusLabel.setText("Opponent's turn");
         gameTimerLabel.setText("15m 0s");
 
-        
         // Add buttons to panel
-        add(scoreBoardButton);
+        add(allscoreButton);
         add(createGameButton);
         add(openGamesScrollPane);
         add(joinGameButton);
@@ -66,71 +49,57 @@ public class MainContentPanel extends CustomPanel {
         add(gameStatusLabel);
         add(gameTimerLabel);
         add(scoreButton);
-        
-        // Add sprint layout constraints
-        // create game button constraints
+
+        // SpringLayout constraints
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
-        
-        // scoreboard button constraints
-        layout.putConstraint(SpringLayout.WEST, scoreBoardButton, 20, SpringLayout.EAST, createGameButton);
-        layout.putConstraint(SpringLayout.NORTH, scoreBoardButton, 0, SpringLayout.NORTH, createGameButton);
-        
-        // Games list constraints
+
+        layout.putConstraint(SpringLayout.WEST, allscoreButton, 20, SpringLayout.EAST, createGameButton);
+        layout.putConstraint(SpringLayout.NORTH, allscoreButton, 0, SpringLayout.NORTH, createGameButton);
+
         layout.putConstraint(SpringLayout.WEST, openGamesScrollPane, 0, SpringLayout.WEST, createGameButton);
-        layout.putConstraint(SpringLayout.EAST, openGamesScrollPane, 0, SpringLayout.EAST, scoreBoardButton);
+        layout.putConstraint(SpringLayout.EAST, openGamesScrollPane, 0, SpringLayout.EAST, allscoreButton);
         layout.putConstraint(SpringLayout.NORTH, openGamesScrollPane, 10, SpringLayout.SOUTH, createGameButton);
         layout.putConstraint(SpringLayout.SOUTH, openGamesScrollPane, -10, SpringLayout.NORTH, joinGameButton);
-        
-        // join button constraints
+
         layout.putConstraint(SpringLayout.WEST, joinGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.SOUTH, joinGameButton, -20, SpringLayout.SOUTH, this);
-        layout.putConstraint(SpringLayout.EAST, joinGameButton, 0, SpringLayout.EAST, scoreBoardButton);
-        
-        // Add label constraints
+        layout.putConstraint(SpringLayout.EAST, joinGameButton, 0, SpringLayout.EAST, allscoreButton);
+
         layout.putConstraint(SpringLayout.WEST, gameStatusLabel, 0, SpringLayout.WEST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameStatusLabel, -20, SpringLayout.NORTH, grid);
         layout.putConstraint(SpringLayout.EAST, gameTimerLabel, 0, SpringLayout.EAST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameTimerLabel, -20, SpringLayout.NORTH, grid);
-        
-        // grid constraints
-        layout.putConstraint(SpringLayout.WEST, grid, 40, SpringLayout.EAST, scoreBoardButton);
+
+        layout.putConstraint(SpringLayout.WEST, grid, 40, SpringLayout.EAST, allscoreButton);
         layout.putConstraint(SpringLayout.NORTH, grid, 40, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.SOUTH, grid, 240, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.EAST, grid, -20, SpringLayout.EAST, this);
-        
-        // View score button constraints
+
         layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
-        
-        
-        //Create game button action listener 
-        createGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                client.proxy.newGame(Integer.parseInt(client.UID));
-                
-                //start countdown when create game
-                startTimer();
-            }
+
+        // Button action listeners
+        createGameButton.addActionListener(e -> {
+            client.proxy.newGame(Integer.parseInt(client.UID));
+            startTimer();
         });
-        
-        
-        scoreButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               client.showPanel(new score(client));
-                
-                //start countdown when create game
-                startTimer();
-            }
+
+        joinGameButton.addActionListener(e -> {
+            //client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID));
+            //startTimer();
+        });
+
+        scoreButton.addActionListener(e -> {
+            client.showPanel(new score(client));
+            startTimer();
+        });
+
+        allscoreButton.addActionListener(e -> {
+            client.showPanel(new allscore(client));
+            startTimer();
         });
     }
-        
-        
-    
-    
-    
 
     @Override
     public void refresh() {
@@ -141,40 +110,52 @@ public class MainContentPanel extends CustomPanel {
         this.revalidate();
         this.repaint();
     }
-    
-    
-    private void startTimer()
-    {
-        //remaining time is 15 minutes
+
+    private void startTimer() {
+        // Remaining time is 15 minutes
         remainingTime = 15 * 60;
-                
-        //create timer that updates every 1 seconds i.e countdown clock
-        timer = new Timer(1000, new ActionListener(){
-            @Override 
-            public void actionPerformed(ActionEvent e) {
-                
-                //countdown time
-                remainingTime--;
-                
-                int minutes = remainingTime / 60;
-                int seconds = remainingTime % 60;
-                
-                String time = String.format("%02d:%02d", minutes, seconds);
-                
-                gameTimerLabel.setText(time);
-                
-                //need to implement when no one else joins the game 
-                //and the countdown is finished that the game is then deleted
-                //at the moment it just prints game finished
-                if(remainingTime <= 0) {
-                    timer.stop();
-                    gameTimerLabel.setText("Finished");
-                }
+
+        // Create a timer that updates every second
+        timer = new Timer(1000, e -> {
+            // Countdown time
+            remainingTime--;
+
+            int minutes = remainingTime / 60;
+            int seconds = remainingTime % 60;
+
+            String time = String.format("%02d:%02d", minutes, seconds);
+
+            gameTimerLabel.setText(time);
+
+            if (remainingTime <= 0) {
+                timer.stop();
+                gameTimerLabel.setText("Finished");
             }
         });
-           timer.start();
+        timer.start();
     }
-    
-    
-    
+
+    /**
+     * A custom class for the TicTacToe grid.
+     */
+    class TicTacToeGrid extends JPanel {
+        public TicTacToeGrid(int rows, int cols) {
+            setLayout(new GridLayout(rows, cols, 5, 5)); // Grid with 5px gaps
+
+            for (int i = 0; i < rows * cols; i++) {
+                JButton button = new JButton();
+                button.setFont(new Font("Arial", Font.BOLD, 32)); // Large text for "X"
+                add(button);
+
+                // Add ActionListener for button clicks
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        button.setText("X");
+                        button.setEnabled(false); // Disable the button after it's clicked
+                    }
+                });
+            }
+        }
+    }
 }

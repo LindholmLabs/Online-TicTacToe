@@ -1,0 +1,122 @@
+package com.groupproject.tictactoeclient.ContentPanes;
+
+import com.groupproject.tictactoeclient.TicTacToeClient;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Class to display the scores of all users.
+ */
+public class allscore extends CustomPanel {
+    public allscore(TicTacToeClient client) {
+        // Set SpringLayout
+        SpringLayout layout = new SpringLayout();
+        setLayout(layout);
+
+        // Text Area for displaying scores
+        JTextArea statsArea = new JTextArea();
+        statsArea.setEditable(false);
+        statsArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+
+        // Add Text Area inside a Scroll Pane
+        JScrollPane scrollPane = new JScrollPane(statsArea);
+        add(scrollPane);
+
+        // Back Button
+        JButton backButton = new JButton("Back");
+        add(backButton);
+
+        // Set constraints for Scroll Pane
+        layout.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, this);
+        layout.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, this);
+
+        // Set constraints for Back Button
+        layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this); // 10px above bottom
+        layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
+
+        // Populate stats area
+        try {
+            String leagueData = client.proxy.leagueTable();
+            if (leagueData.equals("ERROR-NOGAMES")) {
+                statsArea.setText("No games found.");
+                return;
+            } else if (leagueData.equals("ERROR-DB")) {
+                statsArea.setText("Database error occurred.");
+                return;
+            }
+
+            // Split the result into rows
+            String[] games = leagueData.split("\n");
+            Map<String, int[]> playerStats = new HashMap<>();
+
+            // Parse each game's data
+            for (String game : games) {
+                try {
+                    String[] columns = game.split(","); // Assuming data is comma-separated
+                    if (columns.length < 4) {
+                        throw new IllegalArgumentException("Malformed row: " + game);
+                    }
+
+                    String player1UID = columns[1].trim(); // Player 1 UID
+                    String player2UID = columns[2].trim(); // Player 2 UID
+                    String gameState = columns[3].trim();  // Game state as a string
+
+                    int gameStateInt = Integer.parseInt(gameState);
+
+                    // Update stats for Player 1
+                    playerStats.putIfAbsent(player1UID, new int[2]);
+                    playerStats.putIfAbsent(player2UID, new int[2]);
+
+                    if (gameStateInt == 1) { // Player 1 wins
+                        playerStats.get(player1UID)[0]++; // Increment wins for Player 1
+                        playerStats.get(player2UID)[1]++; // Increment losses for Player 2
+                    } else if (gameStateInt == 2) { // Player 2 wins
+                        playerStats.get(player2UID)[0]++; // Increment wins for Player 2
+                        playerStats.get(player1UID)[1]++; // Increment losses for Player 1
+                    }
+
+                } catch (Exception rowException) {
+                    System.err.println("Error processing row: " + game);
+                    rowException.printStackTrace();
+                }
+            }
+
+            // Build the display string
+            StringBuilder statsBuilder = new StringBuilder();
+            statsBuilder.append(String.format("%-20s %-10s %-10s\n", "Username", "Wins", "Losses"));
+            statsBuilder.append("-".repeat(40)).append("\n");
+
+            for (Map.Entry<String, int[]> entry : playerStats.entrySet()) {
+                String username = entry.getKey();
+                int wins = entry.getValue()[0];
+                int losses = entry.getValue()[1];
+                statsBuilder.append(String.format("%-20s %-10d %-10d\n", username, wins, losses));
+            }
+
+            statsArea.setText(statsBuilder.toString());
+
+        } catch (Exception e) {
+            statsArea.setText("An error occurred while calculating player stats.");
+            e.printStackTrace();
+        }
+
+        // Back Button Listener
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.showPanel(new MainContentPanel(client));
+            }
+        });
+    }
+
+    @Override
+    public void refresh() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}
