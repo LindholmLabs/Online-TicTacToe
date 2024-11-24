@@ -14,6 +14,7 @@ public class MainContentPanel extends CustomPanel {
     private JLabel gameTimerLabel;
     private Timer timer;
     private int remainingTime;
+    private TicTacToeGrid grid;
 
     public MainContentPanel(TicTacToeClient client) {
         this.client = client;
@@ -28,7 +29,7 @@ public class MainContentPanel extends CustomPanel {
         JButton joinGameButton = new JButton("Join Game");
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
-        TicTacToeGrid grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
+        grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
         JLabel gameStatusLabel = new JLabel();
         gameTimerLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
@@ -100,7 +101,7 @@ public class MainContentPanel extends CustomPanel {
             client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
 
             if (client.GID != null && !client.GID.isEmpty()) {
-                client.HOST = client.UID;
+                client.HOST_UID = client.UID;
                 String newGameData = "Game " + client.GID + " Host: " + client.UID;
                 if (client.openGames == null || client.openGames.isEmpty()) {
                     client.openGames = newGameData;
@@ -139,6 +140,8 @@ public class MainContentPanel extends CustomPanel {
     public void refresh() {
         System.out.println("Refreshing MainContentPanel");
         // System.out.println("Raw client.openGames data: " + client.openGames);  // Debugging output
+        
+        grid.refresh();
 
         // Check if openGames is empty/null, if there is nothin then display nothing in the box
         if (client.openGames == null || client.openGames.isEmpty()) {
@@ -168,10 +171,6 @@ public class MainContentPanel extends CustomPanel {
 
             openGamesList.setListData(formattedGames);
         }
-
-        //update the UI (not sure if this is how to do it, saw on stack overflow)
-        this.revalidate();
-        this.repaint();
     }
 
     private void startTimer() {

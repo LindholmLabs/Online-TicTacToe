@@ -11,11 +11,13 @@ import java.util.logging.Logger;
  *
  * @author Willi
  */
-public class FetchGamesThread implements Runnable {
+public class PollingThread implements Runnable {
     private TicTacToeClient client;
+    private HelperMethods helperMethods;
     
-    public FetchGamesThread(TicTacToeClient client) {
+    public PollingThread(TicTacToeClient client) {
         this.client = client;
+        helperMethods = new HelperMethods(client);
     }
     
     @Override
@@ -28,7 +30,9 @@ public class FetchGamesThread implements Runnable {
                     continue;
                 }
                 
-                System.out.println("Fetch Games thread executing...");
+                client.BOARD = helperMethods.GetBoard();
+                
+                System.out.println("Polling thread executing...");
                 client.openGames = client.proxy.showOpenGames();
                 System.out.println("Result: " + client.openGames);
                 client.refreshCurrentPanel();

@@ -30,9 +30,10 @@ public class TicTacToeClient {
     public String UID;
     public String GID;
     public String UID2;
-    public String HOST = " ";
+    public String HOST_UID = " ";
     public String username;
     public String openGames;
+    public int[][] BOARD;
     
 
     public static void main(String[] args) {
@@ -65,7 +66,7 @@ public class TicTacToeClient {
         
         frame.setVisible(true);
         
-        Thread t1 = new Thread(new FetchGamesThread(this));
+        Thread t1 = new Thread(new PollingThread(this));
         t1.start();
     }
     
