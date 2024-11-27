@@ -4,8 +4,10 @@
  */
 package com.groupproject.tictactoeclient;
 
+import com.groupproject.tictactoeclient.ContentPanes.MainContentPanel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -80,5 +82,50 @@ public class HelperMethods {
             System.out.println("Cannot take square");
             return false;
         }
+    }
+    
+    //https://www.geeksforgeeks.org/java-joptionpane/
+    public void showOptions() {
+            
+        String[] options = {"Main Menu", "Quit"};
+
+            // Display an option dialog with custom options
+        // The user's choice is stored in the 'choice'
+        // variable
+        int choice = JOptionPane.showOptionDialog(
+            null, // Parent component (null means center on screen)
+            "Options", // Message to display
+            "Custom Options", // Dialog title
+            JOptionPane.YES_NO_CANCEL_OPTION, // Option type (Yes, No, Cancel)
+            JOptionPane.QUESTION_MESSAGE, // Message type (question icon)
+            null, // Custom icon (null means no custom icon)
+            options, // Custom options array
+            options[0] // Initial selection (default is "Cancel")
+        );
+
+        // Check the user's choice and display a
+        // corresponding message
+        if (choice == JOptionPane.YES_OPTION) {
+            // If the user chose 'Yes'
+            // show a message indicating that they are
+            // proceeding
+            client.resetGame();
+            client.showPanel(new MainContentPanel(client));
+        }
+        else if (choice == JOptionPane.NO_OPTION) {
+            // If the user chose 'No'
+            // show a message indicating that they are not
+            // proceeding
+            
+            System.exit(0);
+        }
+        else {
+            // If the user chose 'Cancel' or closed the
+            // dialog
+            // show a message indicating the operation is
+            // canceled
+            JOptionPane.showMessageDialog(null, "Operation canceled.");
+        }
+    
     }
 }

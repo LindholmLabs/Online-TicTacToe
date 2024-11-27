@@ -25,7 +25,7 @@ public class TicTacToeClient {
     private static TicTacToeClient client;
     private static TicTacToeWebService service;
     public static TicTacToeWS proxy;
-    private JFrame frame;
+    public JFrame frame;
     private CustomPanel CurrentPanel;
     public String UID;
     public String GID;
@@ -81,4 +81,17 @@ public class TicTacToeClient {
     public void refreshCurrentPanel() {
         CurrentPanel.refresh();
     }
+    
+    //reset the game data when user goes back to the main menu 
+    //might be more to do but at the moment it works fine
+    public void resetGame() {
+        
+        this.GID = null;
+        this.UID2 = null;
+        this.HOST_UID = " ";
+        refreshCurrentPanel();
+//    }
+    
+    
+}
 }

@@ -13,13 +13,13 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
+import javax.swing.*;
 
 /**
  *
  * @author William
  */
-class TicTacToeGrid extends JPanel {
+public class TicTacToeGrid extends JPanel {
 
     TicTacToeClient client;
     ArrayList<JButton> gridButtons;
@@ -50,9 +50,9 @@ class TicTacToeGrid extends JPanel {
                         button.setText("O");
                     }
                 }
-                button.setEnabled(false); // prevents the player from clicking the same spot again
-            });
-        }
+                button.setEnabled(false); // prevents the player from clicking the same spot again              
+            });        
+        }   
     }
 
     public void refresh() {
@@ -80,11 +80,11 @@ class TicTacToeGrid extends JPanel {
             } else {
                 gridButtons.get(index).setText("O");
                 gridButtons.get(index).setEnabled(false);
-            }
+            }       
         }
-        
+     
         this.revalidate();
         this.repaint();
     }
-
+    
 }
