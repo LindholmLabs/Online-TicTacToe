@@ -28,6 +28,9 @@ public class MainContentPanel extends CustomPanel {
         JButton createGameButton = new JButton("New Game");
         JButton allscoreButton = new JButton("Scoreboard");
         JButton joinGameButton = new JButton("Join Game");
+        JButton forfeitButton = new JButton("Forfeit Game");
+        JButton logoutButton = new JButton("Logout");
+        
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
         grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
@@ -53,9 +56,15 @@ public class MainContentPanel extends CustomPanel {
         add(gameTimerLabel);
         add(scoreButton);
         add(userNameLabel);
+        add(forfeitButton);
 
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
+        
+        //forfeit button
+        layout.putConstraint(SpringLayout.EAST, forfeitButton, -160, SpringLayout.EAST, grid);
+        layout.putConstraint(SpringLayout.SOUTH, forfeitButton, -20, SpringLayout.SOUTH,this);
+        
 
         layout.putConstraint(SpringLayout.WEST, allscoreButton, 20, SpringLayout.EAST, createGameButton);
         layout.putConstraint(SpringLayout.NORTH, allscoreButton, 0, SpringLayout.NORTH, createGameButton);
