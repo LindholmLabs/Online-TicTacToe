@@ -64,16 +64,18 @@ public class TicTacToeGrid extends JPanel {
     }
 
     public void refresh() {
-        System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID + ", GAME_ID: " + client.GID +  ", MOVES: " + client.NUM_OF_MOVES);
+        System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID + ", GAME_ID: " + client.GID +  ", MOVES: " + client.NUM_OF_MOVES + ", ISHOST: " + helperMethods.IsHost());
         if (client.BOARD == null) {
             return;
         }
                 
         final int[][] board = client.BOARD;
         client.NUM_OF_MOVES = client.BOARD.length;
+        
         if (client.NUM_OF_MOVES % 2 == 0 && helperMethods.IsHost()) {
             client.OPPONENTS_TURN = false;
         }
+        
         if (client.NUM_OF_MOVES % 2 == 1 && !helperMethods.IsHost()) {
             client.OPPONENTS_TURN = false;
         }
