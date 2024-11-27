@@ -136,7 +136,7 @@ public class MainContentPanel extends CustomPanel {
                     client.openGames += "\n" + newGameData;  //seperates each new game
                 }
             }
-
+            startTimer();
             refresh();  // refresh the list to show if there is a new game added
         });
 
@@ -147,7 +147,6 @@ public class MainContentPanel extends CustomPanel {
                 client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
                 client.GID = client.GID_Temp;
                 client.HOST_UID = "";
-                startTimer();
             } else {
                 System.out.println("no game selected.");
             }
@@ -241,7 +240,10 @@ public class MainContentPanel extends CustomPanel {
 
     private void startTimer() {
         // Remaining time is 15 minutes
-        remainingTime = 15 * 60;
+        remainingTime = 1 * 15;
+        
+        //commented out as longer duration
+        //remainingTime =15*60;
 
         // Create a timer that updates every second
         timer = new Timer(1000, e -> {
@@ -257,7 +259,17 @@ public class MainContentPanel extends CustomPanel {
 
             if (remainingTime <= 0) {
                 timer.stop();
-                gameTimerLabel.setText("Finished");
+                gameTimerLabel.setText("No opponent, please try again");
+                
+                //currently the game deletes when noone joins, however when the user makes a move and waits the game does not delete and is 
+                //still present in the list of games           
+                String deleteGame = client.proxy.deleteGame(Integer.parseInt(client.GID), Integer.parseInt(client.UID));
+                
+                System.out.println(deleteGame);
+                client.resetGame();
+                client.showPanel(new MainContentPanel(client));
+                refresh();
+              
             }
         });
         timer.start();
