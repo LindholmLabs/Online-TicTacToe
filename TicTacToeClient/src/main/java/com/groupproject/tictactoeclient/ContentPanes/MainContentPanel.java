@@ -15,6 +15,7 @@ public class MainContentPanel extends CustomPanel {
     private Timer timer;
     private int remainingTime;
     private TicTacToeGrid grid;
+    private JLabel userNameLabel;
 
     public MainContentPanel(TicTacToeClient client) {
         this.client = client;
@@ -32,11 +33,15 @@ public class MainContentPanel extends CustomPanel {
         grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
         JLabel gameStatusLabel = new JLabel();
         gameTimerLabel = new JLabel();
+        userNameLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
 
         // Set mock data for labels
         gameStatusLabel.setText("Opponent's turn");
         gameTimerLabel.setText("15m 0s");
+        
+        //set userNameLabel as the current user logged in 
+        userNameLabel.setText(client.username);
 
         // Add buttons to panel
         add(allscoreButton);
@@ -47,6 +52,7 @@ public class MainContentPanel extends CustomPanel {
         add(gameStatusLabel);
         add(gameTimerLabel);
         add(scoreButton);
+        add(userNameLabel);
 
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
@@ -65,6 +71,13 @@ public class MainContentPanel extends CustomPanel {
 
         layout.putConstraint(SpringLayout.WEST, gameStatusLabel, 0, SpringLayout.WEST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameStatusLabel, -20, SpringLayout.NORTH, grid);
+        
+        
+        //Username label 
+        layout.putConstraint(SpringLayout.EAST, userNameLabel, -130, SpringLayout.EAST, grid);
+        layout.putConstraint(SpringLayout.NORTH, userNameLabel, -20, SpringLayout.NORTH, grid);
+
+        
         layout.putConstraint(SpringLayout.EAST, gameTimerLabel, 0, SpringLayout.EAST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameTimerLabel, -20, SpringLayout.NORTH, grid);
 
