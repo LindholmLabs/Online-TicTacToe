@@ -39,7 +39,7 @@ public class HelperMethods {
     }
     
     public int[][] GetBoard() {
-        if (client.GID == null) {
+        if (client.GID.isBlank()) {
             return null;
         }
         

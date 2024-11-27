@@ -93,21 +93,16 @@ public class MainContentPanel extends CustomPanel {
             if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
                 String selectedGame = openGamesList.getSelectedValue();
 
-                System.out.println("selected Game: " + selectedGame);
-
                 String[] parts = selectedGame.split(" ");
                 if (parts.length >= 2) {
                     String gameID = parts[1];  // The GID is the second part
                     // Debug: Print the extracted GID
-                    System.out.println("Extracted GID: " + gameID);
 
                     // Store the game ID to use in the joinGame action
                     client.GID_Temp = gameID;
-                    System.out.println("Temp GID = " + client.GID_Temp);
 
                 } else {
                     // Handle cases where the format doesn't match
-                    System.out.println("Invalid format for game entry: " + selectedGame);
                 }
             }
         });
@@ -125,8 +120,6 @@ public class MainContentPanel extends CustomPanel {
                 }
             }
 
-            System.out.println("New game added: " + client.openGames);
-
             refresh();  // refresh the list to show if there is a new game added
         });
 
@@ -135,7 +128,7 @@ public class MainContentPanel extends CustomPanel {
             if (client.GID_Temp != null) {
                 client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
                 client.GID = client.GID_Temp;
-                client.HOST_UID = null;
+                client.HOST_UID = "";
                 startTimer();
             } else {
                 System.out.println("no game selected.");
@@ -155,14 +148,12 @@ public class MainContentPanel extends CustomPanel {
 
     @Override
     public void refresh() {
-        System.out.println("Refreshing MainContentPanel");
         // System.out.println("Raw client.openGames data: " + client.openGames);  // Debugging output
-        
+
         grid.refresh();
 
         // Check if openGames is empty/null, if there is nothin then display nothing in the box
         if (client.openGames == null || client.openGames.isEmpty()) {
-            System.out.println("No games available.");
             openGamesList.setListData(new String[0]);
         } else {
             String[] rawGames = client.openGames.split("\n");
@@ -213,5 +204,4 @@ public class MainContentPanel extends CustomPanel {
         });
         timer.start();
     }
-
 }

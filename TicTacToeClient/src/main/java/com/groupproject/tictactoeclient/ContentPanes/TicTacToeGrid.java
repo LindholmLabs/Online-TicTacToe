@@ -39,6 +39,13 @@ public class TicTacToeGrid extends JPanel {
             add(button);
 
             button.addActionListener(e -> {
+                
+                if (client.OPPONENTS_TURN) {
+                    System.out.println("Not my turn!");
+                    return;
+                }
+                System.out.println("It is my turn!");
+                
                 //need to add an if statment that checks the GID 
                 //client.UID2 = client.proxy.leagueTable();
                 if (client.UID.equals(client.HOST_UID)) {
@@ -56,7 +63,7 @@ public class TicTacToeGrid extends JPanel {
     }
 
     public void refresh() {
-        System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID);
+        System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID + ", GAME_ID: " + client.GID);
         if (client.BOARD == null) {
             return;
         }
@@ -64,6 +71,10 @@ public class TicTacToeGrid extends JPanel {
         System.out.println("Updating TicTacToeGrid...");
         
         final int[][] board = client.BOARD;
+        final int totalNumOfMoves = client.BOARD.length;
+        if (totalNumOfMoves % 2 == 0 && helperMethods.IsHost()) {
+            client.OPPONENTS_TURN = false;
+        }
         
         for (int[] row : board) {
             // Convert grid coordinates to proper index
@@ -72,7 +83,7 @@ public class TicTacToeGrid extends JPanel {
             // if there is no host player id saved save it from detected move
             if (!String.valueOf(row[0]).equals(client.UID) && client.HOST_UID.isBlank()) {
                 client.HOST_UID = String.valueOf(row[0]);
-            } 
+            }
             
             if (String.valueOf(row[0]).equals(client.HOST_UID)) {
                 gridButtons.get(index).setText("X");

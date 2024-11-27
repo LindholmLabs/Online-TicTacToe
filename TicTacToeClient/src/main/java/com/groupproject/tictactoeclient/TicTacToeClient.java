@@ -27,11 +27,12 @@ public class TicTacToeClient {
     public static TicTacToeWS proxy;
     public JFrame frame;
     private CustomPanel CurrentPanel;
-    public String UID;
-    public String GID;
+    public String UID = "";
+    public String GID = "";
+    public boolean OPPONENTS_TURN = false;
     public String UID2;
     public String GID_Temp;
-    public String HOST_UID = " ";
+    public String HOST_UID = "";
     public String username;
     public String openGames;
     public int[][] BOARD;
