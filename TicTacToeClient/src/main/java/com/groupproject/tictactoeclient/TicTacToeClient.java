@@ -30,6 +30,7 @@ public class TicTacToeClient {
     public String UID;
     public String GID;
     public String UID2;
+    public String GID_Temp;
     public String HOST_UID = " ";
     public String username;
     public String openGames;

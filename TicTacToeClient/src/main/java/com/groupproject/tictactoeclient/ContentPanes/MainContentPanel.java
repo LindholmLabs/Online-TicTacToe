@@ -89,7 +89,9 @@ public class MainContentPanel extends CustomPanel {
                     System.out.println("Extracted GID: " + gameID);
 
                     // Store the game ID to use in the joinGame action
-                    client.GID = gameID;
+                    client.GID_Temp = gameID;
+                    System.out.println("Temp GID = " + client.GID_Temp);
+
                 } else {
                     // Handle cases where the format doesn't match
                     System.out.println("Invalid format for game entry: " + selectedGame);
@@ -117,8 +119,9 @@ public class MainContentPanel extends CustomPanel {
 
         joinGameButton.addActionListener(e -> {
             // join the game using GID
-            if (client.GID != null) {
-                client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID));
+            if (client.GID_Temp != null) {
+                client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
+                client.GID = client.GID_Temp;
                 startTimer();
             } else {
                 System.out.println("no game selected.");
