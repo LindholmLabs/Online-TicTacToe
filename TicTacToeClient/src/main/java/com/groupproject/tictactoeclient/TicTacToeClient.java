@@ -1,9 +1,8 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
-
 package com.groupproject.tictactoeclient;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.groupproject.tictactoeclient.ContentPanes.CustomPanel;
 import com.groupproject.tictactoeclient.ContentPanes.MainContentPanel;
@@ -22,6 +21,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author William
  */
 public class TicTacToeClient {
+
     private static TicTacToeClient client;
     private static TicTacToeWebService service;
     public static TicTacToeWS proxy;
@@ -30,13 +30,13 @@ public class TicTacToeClient {
     public String UID = "";
     public String GID = "";
     public boolean OPPONENTS_TURN = false;
+    public int NUM_OF_MOVES = 0;
     public String UID2;
     public String GID_Temp;
     public String HOST_UID = "";
     public String username;
     public String openGames;
     public int[][] BOARD;
-    
 
     public static void main(String[] args) {
         // Enable flatlaf dark theme
@@ -44,34 +44,34 @@ public class TicTacToeClient {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException e) {
             JOptionPane.showMessageDialog(
-                null,
-                "Could not initialize FlatLaf. Default swing look and feel will be used.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
+                    null,
+                    "Could not initialize FlatLaf. Default swing look and feel will be used.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
-        
+
         // Initialize SOAP interface
         service = new TicTacToeWebService();
         proxy = service.getTicTacToeWSPort();
-        
+
         // Initalize UI
         client = new TicTacToeClient();
     }
-    
+
     public TicTacToeClient() {
         frame = new JFrame("TicTacToe"); // Create new Swing window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
-         //showPanel(new register(this));
+        //showPanel(new register(this));
         showPanel(new StartPanel(this));
-        
+
         frame.setVisible(true);
-        
+
         Thread t1 = new Thread(new PollingThread(this));
         t1.start();
     }
-    
+
     public void showPanel(CustomPanel panel) {
         frame.getContentPane().removeAll(); // Clear current content
         CurrentPanel = panel;
@@ -79,21 +79,20 @@ public class TicTacToeClient {
         frame.revalidate();                 // Refresh the frame
         frame.repaint();
     }
-    
+
     public void refreshCurrentPanel() {
         CurrentPanel.refresh();
     }
-    
+
     //reset the game data when user goes back to the main menu 
     //might be more to do but at the moment it works fine
     public void resetGame() {
-        
-        this.GID = null;
+
+        this.GID = "";
         this.UID2 = null;
-        this.HOST_UID = " ";
+        this.HOST_UID = "";
+        this.NUM_OF_MOVES = 0;
         refreshCurrentPanel();
-//    }
-    
-    
-}
+    }
+
 }

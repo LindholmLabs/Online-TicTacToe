@@ -41,10 +41,16 @@ public class PollingThread implements Runnable {
                 client.openGames = client.proxy.showOpenGames();
                 client.refreshCurrentPanel();
 
+                // if there is no game id, dont run code below
                 if (client.GID.isBlank() || client.GID.isEmpty()) {
                     continue;
                 }
 
+                // if there are no moves, dont run code below
+                if (client.NUM_OF_MOVES < 2) {
+                    continue;
+                }
+                
                 //call the web server to check if the game has been won or not yet
                 String result = client.proxy.checkWin(Integer.parseInt(client.GID));
 

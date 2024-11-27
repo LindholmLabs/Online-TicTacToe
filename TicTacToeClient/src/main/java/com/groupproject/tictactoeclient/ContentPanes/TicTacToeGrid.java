@@ -57,22 +57,24 @@ public class TicTacToeGrid extends JPanel {
                         button.setText("O");
                     }
                 }
-                button.setEnabled(false); // prevents the player from clicking the same spot again              
+                button.setEnabled(false); // prevents the player from clicking the same spot again
+                client.OPPONENTS_TURN = true; // prevent user from taking square again
             });        
         }   
     }
 
     public void refresh() {
-        System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID + ", GAME_ID: " + client.GID);
+        System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID + ", GAME_ID: " + client.GID +  ", MOVES: " + client.NUM_OF_MOVES);
         if (client.BOARD == null) {
             return;
         }
-        
-        System.out.println("Updating TicTacToeGrid...");
-        
+                
         final int[][] board = client.BOARD;
-        final int totalNumOfMoves = client.BOARD.length;
-        if (totalNumOfMoves % 2 == 0 && helperMethods.IsHost()) {
+        client.NUM_OF_MOVES = client.BOARD.length;
+        if (client.NUM_OF_MOVES % 2 == 0 && helperMethods.IsHost()) {
+            client.OPPONENTS_TURN = false;
+        }
+        if (client.NUM_OF_MOVES % 2 == 1 && !helperMethods.IsHost()) {
             client.OPPONENTS_TURN = false;
         }
         
