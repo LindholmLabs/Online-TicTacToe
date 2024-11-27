@@ -143,6 +143,7 @@ public class MainContentPanel extends CustomPanel {
         joinGameButton.addActionListener(e -> {
             // join the game using GID
             if (client.GID_Temp != null) {
+                client.resetGame();
                 client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
                 client.GID = client.GID_Temp;
                 client.HOST_UID = "";

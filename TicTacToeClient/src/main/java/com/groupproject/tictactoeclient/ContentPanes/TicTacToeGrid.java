@@ -65,6 +65,12 @@ public class TicTacToeGrid extends JPanel {
 
     public void refresh() {
         System.out.println("UID: " + client.UID + ", HOST_UID: " + client.HOST_UID + ", GAME_ID: " + client.GID +  ", MOVES: " + client.NUM_OF_MOVES + ", ISHOST: " + helperMethods.IsHost());
+        
+        for (var button : gridButtons) {
+            button.setText("");
+            button.setEnabled(true);
+        }
+        
         if (client.BOARD == null) {
             return;
         }

@@ -87,12 +87,12 @@ public class TicTacToeClient {
     //reset the game data when user goes back to the main menu 
     //might be more to do but at the moment it works fine
     public void resetGame() {
-
+        this.BOARD = null;
         this.GID = "";
         this.UID2 = null;
         this.HOST_UID = "";
         this.NUM_OF_MOVES = 0;
-        this.BOARD = new int [2][2];
+        
         refreshCurrentPanel();
     }
     
