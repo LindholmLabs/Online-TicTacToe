@@ -41,7 +41,7 @@ public class MainContentPanel extends CustomPanel {
         gameTimerLabel.setText("15m 0s");
         
         //set userNameLabel as the current user logged in 
-        userNameLabel.setText(client.username);
+        userNameLabel.setText("Welcome : " + client.username);
 
         // Add buttons to panel
         add(allscoreButton);
@@ -74,8 +74,8 @@ public class MainContentPanel extends CustomPanel {
         
         
         //Username label 
-        layout.putConstraint(SpringLayout.EAST, userNameLabel, -130, SpringLayout.EAST, grid);
-        layout.putConstraint(SpringLayout.NORTH, userNameLabel, -20, SpringLayout.NORTH, grid);
+        layout.putConstraint(SpringLayout.WEST, userNameLabel, 0, SpringLayout.WEST, grid);
+        layout.putConstraint(SpringLayout.NORTH, userNameLabel, -35, SpringLayout.NORTH, grid);
 
         
         layout.putConstraint(SpringLayout.EAST, gameTimerLabel, 0, SpringLayout.EAST, grid);
