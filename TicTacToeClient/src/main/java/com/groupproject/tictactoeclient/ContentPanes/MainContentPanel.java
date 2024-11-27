@@ -15,8 +15,10 @@ public class MainContentPanel extends CustomPanel {
     private Timer timer;
     private int remainingTime;
     private TicTacToeGrid grid;
-    private JLabel userNameLabel;
     private JLabel gameStatusLabel;
+
+    private JLabel currentGameLabel;
+
 
     public MainContentPanel(TicTacToeClient client) {
         this.client = client;
@@ -37,15 +39,15 @@ public class MainContentPanel extends CustomPanel {
         grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
         gameStatusLabel = new JLabel();
         gameTimerLabel = new JLabel();
-        userNameLabel = new JLabel();
+        currentGameLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
-
-        // Set mock data for labels
-        gameStatusLabel.setText("Opponent's turn");
-        gameTimerLabel.setText("15m 0s");
         
-        //set userNameLabel as the current user logged in 
-        userNameLabel.setText("Welcome : " + client.username);
+        
+        client.frame.setTitle("TicTacToe - Welcome " + client.username);
+        
+        
+        
+        gameTimerLabel.setText("15m 0s");
 
         // Add buttons to panel
         add(allscoreButton);
@@ -56,7 +58,7 @@ public class MainContentPanel extends CustomPanel {
         add(gameStatusLabel);
         add(gameTimerLabel);
         add(scoreButton);
-        add(userNameLabel);
+        add(currentGameLabel);
         add(forfeitButton);
 
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
@@ -84,8 +86,8 @@ public class MainContentPanel extends CustomPanel {
         
         
         //Username label 
-        layout.putConstraint(SpringLayout.WEST, userNameLabel, 0, SpringLayout.WEST, grid);
-        layout.putConstraint(SpringLayout.NORTH, userNameLabel, -35, SpringLayout.NORTH, grid);
+        layout.putConstraint(SpringLayout.WEST, currentGameLabel, 0, SpringLayout.WEST, grid);
+        layout.putConstraint(SpringLayout.NORTH, currentGameLabel, -35, SpringLayout.NORTH, grid);
 
         
         layout.putConstraint(SpringLayout.EAST, gameTimerLabel, 0, SpringLayout.EAST, grid);
@@ -98,7 +100,7 @@ public class MainContentPanel extends CustomPanel {
 
         layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
-
+        
         openGamesList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
                 String selectedGame = openGamesList.getSelectedValue();
@@ -118,8 +120,8 @@ public class MainContentPanel extends CustomPanel {
         });
 
         createGameButton.addActionListener(e -> {
-            client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
-
+           client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
+         
             if (client.GID != null && !client.GID.isEmpty()) {
                 client.HOST_UID = client.UID;
                 client.OPPONENTS_TURN = false;
@@ -145,6 +147,26 @@ public class MainContentPanel extends CustomPanel {
                 System.out.println("no game selected.");
             }
         });
+        
+        
+//        //forfeit button action listener 
+//        forfeitButton.addActionListener(e -> {
+//            if(client.UID.equals(client.HOST_UID))
+//            {
+//                client.proxy.setGameState(Integer.parseInt(client.GID), 2);
+//                
+//                
+//            } 
+//            else 
+//            { 
+//                client.proxy.setGameState(Integer.parseInt(client.GID), 1);
+//            }
+//            
+//            
+//            refresh();  // refresh the list to show if there is a new game added
+//        });
+//        
+        
 
         scoreButton.addActionListener(e -> {
             client.showPanel(new score(client));
@@ -195,6 +217,8 @@ public class MainContentPanel extends CustomPanel {
             }
 
             openGamesList.setListData(formattedGames);
+            //set userNameLabel as the current user logged in 
+            currentGameLabel.setText("Current Game  : " + client.GID);
         }
     }
 
