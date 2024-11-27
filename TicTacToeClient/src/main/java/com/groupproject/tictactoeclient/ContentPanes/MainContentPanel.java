@@ -135,6 +135,7 @@ public class MainContentPanel extends CustomPanel {
             if (client.GID_Temp != null) {
                 client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
                 client.GID = client.GID_Temp;
+                client.HOST_UID = null;
                 startTimer();
             } else {
                 System.out.println("no game selected.");
