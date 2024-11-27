@@ -92,7 +92,20 @@ public class TicTacToeClient {
         this.UID2 = null;
         this.HOST_UID = "";
         this.NUM_OF_MOVES = 0;
+        this.BOARD = new int [2][2];
         refreshCurrentPanel();
+    }
+    
+    
+    
+    public void logout(){
+        this.UID = null;
+        this.GID = "";
+        this.UID2 = null;
+        this.HOST_UID = "";
+        this.NUM_OF_MOVES = 0;
+        this.BOARD = new int [2][2];
+        
     }
 
 }

@@ -16,7 +16,6 @@ public class MainContentPanel extends CustomPanel {
     private int remainingTime;
     private TicTacToeGrid grid;
     private JLabel gameStatusLabel;
-
     private JLabel currentGameLabel;
 
 
@@ -60,6 +59,7 @@ public class MainContentPanel extends CustomPanel {
         add(scoreButton);
         add(currentGameLabel);
         add(forfeitButton);
+        add(logoutButton);
 
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
@@ -97,6 +97,10 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.NORTH, grid, 40, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.SOUTH, grid, 240, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.EAST, grid, -20, SpringLayout.EAST, this);
+        
+        layout.putConstraint(SpringLayout.SOUTH, logoutButton, -80, SpringLayout.SOUTH, this);
+        layout.putConstraint(SpringLayout.EAST, logoutButton, -20, SpringLayout.EAST, this);
+        
 
         layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
@@ -146,6 +150,18 @@ public class MainContentPanel extends CustomPanel {
             } else {
                 System.out.println("no game selected.");
             }
+        });
+        
+        
+        //logout button 
+        logoutButton.addActionListener(e -> {
+           
+            //reset the client info 
+            client.logout();
+            
+            //go back to the start panel 
+            client.showPanel(new login(client));
+            
         });
         
         
