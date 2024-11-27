@@ -125,6 +125,11 @@ public class MainContentPanel extends CustomPanel {
         });
 
         createGameButton.addActionListener(e -> {
+           if (!client.HOST_UID.isEmpty()) {
+               JOptionPane.showMessageDialog(null, "You cannot create a new game since you already have one.", "NOO.", JOptionPane.INFORMATION_MESSAGE);
+               return;
+           }
+            
            client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
          
             if (client.GID != null && !client.GID.isEmpty()) {
