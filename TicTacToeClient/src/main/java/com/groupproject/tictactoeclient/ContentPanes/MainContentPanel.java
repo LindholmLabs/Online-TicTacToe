@@ -17,6 +17,7 @@ public class MainContentPanel extends CustomPanel {
     private TicTacToeGrid grid;
     private JLabel gameStatusLabel;
     private JLabel currentGameLabel;
+    private String[] previousRawGames;
 
 
     public MainContentPanel(TicTacToeClient client) {
@@ -124,6 +125,11 @@ public class MainContentPanel extends CustomPanel {
         });
 
         createGameButton.addActionListener(e -> {
+           if (!client.HOST_UID.isEmpty()) {
+               JOptionPane.showMessageDialog(null, "You cannot create a new game since you already have one.", "NOO.", JOptionPane.INFORMATION_MESSAGE);
+               return;
+           }
+            
            client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
          
             if (client.GID != null && !client.GID.isEmpty()) {
@@ -212,6 +218,10 @@ public class MainContentPanel extends CustomPanel {
             openGamesList.setListData(new String[0]);
         } else {
             String[] rawGames = client.openGames.split("\n");
+            
+            if (previousRawGames == null) {
+                previousRawGames = new String[0];
+            }
 
             String[] formattedGames = new String[rawGames.length];
 
@@ -231,8 +241,12 @@ public class MainContentPanel extends CustomPanel {
                     formattedGames[i] = " "; //set the box to nothing the format isnt right i.e if there is no host name
                 }
             }
+            
+            if (rawGames.length != previousRawGames.length) {
+                openGamesList.setListData(formattedGames);
+            }
+            previousRawGames = rawGames;
 
-            openGamesList.setListData(formattedGames);
             //set userNameLabel as the current user logged in 
             currentGameLabel.setText("Current Game  : " + client.GID);
         }
