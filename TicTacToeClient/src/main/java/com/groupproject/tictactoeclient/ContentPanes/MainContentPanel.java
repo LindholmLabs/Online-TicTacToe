@@ -254,14 +254,15 @@ public class MainContentPanel extends CustomPanel {
 
     private void startTimer() {
         // Remaining time is 15 minutes
-        remainingTime = 1 * 15;
+        //remainingTime = 1 * 15;
         
         //commented out as longer duration
-        //remainingTime =15*60;
+          remainingTime =15*60;
 
         // Create a timer that updates every second
         timer = new Timer(1000, e -> {
             // Countdown time
+            timer.start();
             remainingTime--;
 
             int minutes = remainingTime / 60;
@@ -270,6 +271,13 @@ public class MainContentPanel extends CustomPanel {
             String time = String.format("%02d:%02d", minutes, seconds);
 
             gameTimerLabel.setText(time);
+            
+            if (client.NUM_OF_MOVES >= 2) {
+                timer.restart();
+                timer.stop();
+                
+                
+            }
 
             if (remainingTime <= 0) {
                 timer.stop();

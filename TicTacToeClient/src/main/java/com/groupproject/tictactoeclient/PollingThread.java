@@ -40,23 +40,29 @@ public class PollingThread implements Runnable {
 
                 client.openGames = client.proxy.showOpenGames();
                 client.refreshCurrentPanel();
+                System.out.println("open games panel resetting\n");
 
                 // if there is no game id, dont run code below
                 if (client.GID.isBlank() || client.GID.isEmpty()) {
                     continue;
                 }
+                
 
                 // if there are no moves, dont run code below
                 if (client.NUM_OF_MOVES < 2) {
                     continue;
                 }
                 
+                
                 //call the web server to check if the game has been won or not yet
                 String result = client.proxy.checkWin(Integer.parseInt(client.GID));
-
+                System.out.println("checkWin: " + result);
                 //if the game is not over check the result of the game
-                if (!gameOver) {
+                //if (!gameOver) {
+                    System.out.println("gameOver not working");
                     switch (result) {
+                        
+
                         case "1":
                             // Player 1 wins
                             JOptionPane.showMessageDialog(client.frame, "Player 1 wins!");
@@ -85,7 +91,7 @@ public class PollingThread implements Runnable {
                             JOptionPane.showMessageDialog(client.frame, "Error checking the game status.");
 
                     }
-                }
+                //}
 
             } catch (Exception e) {
                 e.printStackTrace();
