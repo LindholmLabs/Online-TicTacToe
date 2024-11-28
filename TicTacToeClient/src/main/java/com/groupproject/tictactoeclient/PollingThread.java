@@ -60,18 +60,21 @@ public class PollingThread implements Runnable {
                         case "1":
                             // Player 1 wins
                             JOptionPane.showMessageDialog(client.frame, "Player 1 wins!");
+                            client.proxy.setGameState(Integer.parseInt(client.GID), 1);
                             helperMethods.showOptions();
                             gameOver = true;
                             break;
                         case "2":
                             // Player 2 wins
                             JOptionPane.showMessageDialog(client.frame, "Player 2 wins!");
+                            client.proxy.setGameState(Integer.parseInt(client.GID), 2);
                             helperMethods.showOptions();
                             gameOver = true;
                             break;
                         case "3":
                             // It's a draw
                             JOptionPane.showMessageDialog(client.frame, "It's a draw!");
+                            client.proxy.setGameState(Integer.parseInt(client.GID), 3);
                             helperMethods.showOptions();
                             gameOver = true;
                             break;

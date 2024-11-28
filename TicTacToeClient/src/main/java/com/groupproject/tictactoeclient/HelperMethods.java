@@ -60,23 +60,7 @@ public class HelperMethods {
         if ("0".equals(client.proxy.checkSquare(index % 3, (int) Math.floor(index / 3), Integer.parseInt(client.GID)))) {
             System.out.println("Taking square");
             client.proxy.takeSquare(index % 3, (int) Math.floor(index / 3), Integer.parseInt(client.GID), Integer.parseInt(client.UID));
-            String winID = client.proxy.checkWin(Integer.parseInt(client.GID));
-            if (Integer.parseInt(winID) == 1){
-                System.out.println("Player 1 WINS");
-                client.proxy.setGameState(Integer.parseInt(client.GID), 1);
-            }
-            if (Integer.parseInt(winID) == 2){
-                System.out.println("Player 2 WINS");
-                client.proxy.setGameState(Integer.parseInt(client.GID), 2);
-                
-
-            }
-            if (Integer.parseInt(winID) == 3){
-                System.out.println("DRAW");
-                client.proxy.setGameState(Integer.parseInt(client.GID), 3);
-                
-
-            }
+            
             return true;
         } else {
             System.out.println("Cannot take square");

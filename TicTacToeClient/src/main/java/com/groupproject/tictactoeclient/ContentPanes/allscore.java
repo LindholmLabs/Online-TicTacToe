@@ -76,8 +76,8 @@ public class allscore extends CustomPanel {
                     int gameStateInt = Integer.parseInt(gameState);
 
                     // update the stats for Player one
-                    playerStats.putIfAbsent(player1UID, new int[2]);
-                    playerStats.putIfAbsent(player2UID, new int[2]);
+                    playerStats.putIfAbsent(player1UID, new int[3]);
+                    playerStats.putIfAbsent(player2UID, new int[3]);
 
                     if (gameStateInt == 1) { // player 1 wins
                         playerStats.get(player1UID)[0]++; // increment wins for Player 1
@@ -85,6 +85,9 @@ public class allscore extends CustomPanel {
                     } else if (gameStateInt == 2) { // player 2 wins
                         playerStats.get(player2UID)[0]++; // increment wins for Player 2
                         playerStats.get(player1UID)[1]++; // increment losses for Player 1
+                    } else if (gameStateInt == 3) { // player 2 wins
+                        playerStats.get(player2UID)[2]++; //draw
+                        playerStats.get(player1UID)[2]++; //draw
                     }
 
                 } catch (Exception rowException) {
@@ -95,14 +98,15 @@ public class allscore extends CustomPanel {
 
             // Build the display string
             StringBuilder statsBuilder = new StringBuilder();
-            statsBuilder.append(String.format("%-20s %-10s %-10s\n", "Username", "Wins", "Losses"));
-            statsBuilder.append("-".repeat(40)).append("\n");
+            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));
+            statsBuilder.append("-".repeat(50)).append("\n");
 
             for (Map.Entry<String, int[]> entry : playerStats.entrySet()) {
                 String username = entry.getKey();
                 int wins = entry.getValue()[0];
                 int losses = entry.getValue()[1];
-                statsBuilder.append(String.format("%-20s %-10d %-10d\n", username, wins, losses));
+                int draws = entry.getValue()[2];
+                statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", username, wins, losses, draws));
             }
 
             statsArea.setText(statsBuilder.toString());

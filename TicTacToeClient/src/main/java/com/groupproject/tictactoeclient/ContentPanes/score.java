@@ -6,31 +6,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class score extends CustomPanel {
     public score(TicTacToeClient client) {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
-        
-        JLabel statsLabel = new JLabel();
-        statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        statsLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        statsLabel.setForeground(Color.BLACK);
-        add(statsLabel);
+        // Use JTextArea for multiline output
+        JTextArea statsArea = new JTextArea();
+        statsArea.setEditable(false);
+        statsArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        statsArea.setBackground(getBackground());
+        statsArea.setForeground(Color.WHITE);
+
+        JScrollPane scrollPane = new JScrollPane(statsArea);
+        add(scrollPane);
 
         // Back Button
         JButton backButton = new JButton("Back");
         add(backButton);
 
-        
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, statsLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        layout.putConstraint(SpringLayout.NORTH, statsLabel, 20, SpringLayout.NORTH, this);
+        // Layout constraints for JTextArea
+        layout.putConstraint(SpringLayout.NORTH, scrollPane, 20, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, this);
+        layout.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, this);
 
-        
+        // Layout constraints for Back Button
         layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
-        
+
         // Back Button Action
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -40,49 +44,56 @@ public class score extends CustomPanel {
         });
 
         try {
-            
             String leagueData = client.proxy.leagueTable();
             System.out.println("League Data: " + leagueData);
 
             // Check if the response indicates no games or a database error
             if (leagueData.equals("ERROR-NOGAMES")) {
-                statsLabel.setText("No games found.");
+                statsArea.setText("No games found.");
                 return;
             } else if (leagueData.equals("ERROR-DB")) {
-                statsLabel.setText("Database error occurred.");
+                statsArea.setText("Database error occurred.");
                 return;
             }
 
-            
+            // Prepare header for stats
+            StringBuilder statsBuilder = new StringBuilder();
+            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));
+            statsBuilder.append("-".repeat(50)).append("\n");
+
+            // Process league data
             String[] games = leagueData.split("\n");
             int wins = 0;
             int losses = 0;
+            int draws = 0;
 
-            
             for (String game : games) {
                 try {
-                    String[] columns = game.split(","); 
+                    String[] columns = game.split(",");
                     if (columns.length < 4) {
                         throw new IllegalArgumentException("Malformed row: " + game);
                     }
 
-                    String player1UID = columns[1].trim(); // Player 1 UID
-                    String player2UID = columns[2].trim(); // Player 2 UID
-                    String gameState = columns[3].trim();  // Game state (change to a int later)
-
+                    String player1UID = columns[1].trim();
+                    String player2UID = columns[2].trim();
+                    String gameState = columns[3].trim();
                     int gameStateInt = Integer.parseInt(gameState);
 
                     if (player1UID.equals(client.username)) {
-                        if (gameStateInt == 1) { // player 1 wins and adds to the score
+                        if (gameStateInt == 1) { // Player 1 wins
                             wins++;
-                        } else if (gameStateInt == 2) { // player 2 wins and adds to the score
+                        } else if (gameStateInt == 2) { // Player 2 wins
                             losses++;
+                        } else if (gameStateInt == 3) { // Draw
+                            draws++;
                         }
                     } else if (player2UID.equals(client.username)) {
-                        if (gameStateInt == 2) { // P2 wins
+                        if (gameStateInt == 2) { // Player 2 wins
                             wins++;
-                        } else if (gameStateInt == 1) { // P1 wins
+                        } else if (gameStateInt == 1) { // Player 1 wins
                             losses++;
+                        } else if (gameStateInt == 3) { // Draw
+                            draws++;
                         }
                     }
 
@@ -92,16 +103,20 @@ public class score extends CustomPanel {
                 }
             }
 
-            // Display the result as a summary
-            statsLabel.setText(String.format("Player %s: Wins = %d, Losses = %d", client.username, wins, losses));
+            // Add the user's stats to the output
+            statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", client.username, wins, losses, draws));
+
+            // Set the stats to the JTextArea
+            statsArea.setText(statsBuilder.toString());
+
         } catch (Exception e) {
-            statsLabel.setText("An error occurred while calculating player stats.");
+            statsArea.setText("An error occurred while calculating player stats.");
             e.printStackTrace();
         }
     }
 
     @Override
     public void refresh() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated method stub
+        // Not supported yet
     }
 }
