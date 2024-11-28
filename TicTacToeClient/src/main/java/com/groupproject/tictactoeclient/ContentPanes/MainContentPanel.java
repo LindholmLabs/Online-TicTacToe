@@ -19,7 +19,6 @@ public class MainContentPanel extends CustomPanel {
     private JLabel currentGameLabel;
     private String[] previousRawGames;
 
-
     public MainContentPanel(TicTacToeClient client) {
         this.client = client;
 
@@ -33,7 +32,7 @@ public class MainContentPanel extends CustomPanel {
         JButton joinGameButton = new JButton("Join Game");
         JButton forfeitButton = new JButton("Forfeit Game");
         JButton logoutButton = new JButton("Logout");
-        
+
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
         grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
@@ -41,12 +40,9 @@ public class MainContentPanel extends CustomPanel {
         gameTimerLabel = new JLabel();
         currentGameLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
-        
-        
+
         client.frame.setTitle("TicTacToe - Welcome " + client.username);
-        
-        
-        
+
         gameTimerLabel.setText("15m 0s");
 
         // Add buttons to panel
@@ -64,11 +60,10 @@ public class MainContentPanel extends CustomPanel {
 
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
-        
+
         //forfeit button
         layout.putConstraint(SpringLayout.EAST, forfeitButton, -160, SpringLayout.EAST, grid);
-        layout.putConstraint(SpringLayout.SOUTH, forfeitButton, -20, SpringLayout.SOUTH,this);
-        
+        layout.putConstraint(SpringLayout.SOUTH, forfeitButton, -20, SpringLayout.SOUTH, this);
 
         layout.putConstraint(SpringLayout.WEST, allscoreButton, 20, SpringLayout.EAST, createGameButton);
         layout.putConstraint(SpringLayout.NORTH, allscoreButton, 0, SpringLayout.NORTH, createGameButton);
@@ -84,13 +79,11 @@ public class MainContentPanel extends CustomPanel {
 
         layout.putConstraint(SpringLayout.WEST, gameStatusLabel, 0, SpringLayout.WEST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameStatusLabel, -20, SpringLayout.NORTH, grid);
-        
-        
+
         //Username label 
         layout.putConstraint(SpringLayout.WEST, currentGameLabel, 0, SpringLayout.WEST, grid);
         layout.putConstraint(SpringLayout.NORTH, currentGameLabel, -35, SpringLayout.NORTH, grid);
 
-        
         layout.putConstraint(SpringLayout.EAST, gameTimerLabel, 0, SpringLayout.EAST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameTimerLabel, -20, SpringLayout.NORTH, grid);
 
@@ -98,14 +91,13 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.NORTH, grid, 40, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.SOUTH, grid, 240, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.EAST, grid, -20, SpringLayout.EAST, this);
-        
+
         layout.putConstraint(SpringLayout.SOUTH, logoutButton, -80, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, logoutButton, -20, SpringLayout.EAST, this);
-        
 
         layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
-        
+
         openGamesList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
                 String selectedGame = openGamesList.getSelectedValue();
@@ -125,13 +117,13 @@ public class MainContentPanel extends CustomPanel {
         });
 
         createGameButton.addActionListener(e -> {
-           if (!client.HOST_UID.isEmpty()) {
-               JOptionPane.showMessageDialog(null, "You cannot create a new game since you already have one.", "NOO.", JOptionPane.INFORMATION_MESSAGE);
-               return;
-           }
-            
-           client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
-         
+            if (!client.HOST_UID.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "You cannot create a new game since you already have one.", "NOO.", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
+
             if (client.GID != null && !client.GID.isEmpty()) {
                 client.HOST_UID = client.UID;
                 client.OPPONENTS_TURN = false;
@@ -149,28 +141,28 @@ public class MainContentPanel extends CustomPanel {
         joinGameButton.addActionListener(e -> {
             // join the game using GID
             if (client.GID_Temp != null) {
-                client.resetGame();
-                client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
-                client.GID = client.GID_Temp;
-                client.HOST_UID = "";
+                if (!client.UID.equals(client.HOST_UID)) {
+                    client.resetGame();
+                    client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
+                    client.GID = client.GID_Temp;
+                    client.HOST_UID = "";
+                }
             } else {
                 System.out.println("no game selected.");
             }
         });
-        
-        
+
         //logout button 
         logoutButton.addActionListener(e -> {
-           
+
             //reset the client info 
             client.logout();
-            
+
             //go back to the start panel 
             client.showPanel(new login(client));
-            
+
         });
-        
-        
+
 //        //forfeit button action listener 
 //        forfeitButton.addActionListener(e -> {
 //            if(client.UID.equals(client.HOST_UID))
@@ -188,16 +180,14 @@ public class MainContentPanel extends CustomPanel {
 //            refresh();  // refresh the list to show if there is a new game added
 //        });
 //        
-        
-
         scoreButton.addActionListener(e -> {
             client.showPanel(new score(client));
-            startTimer();
+            
         });
 
         allscoreButton.addActionListener(e -> {
             client.showPanel(new allscore(client));
-            startTimer();
+            
         });
     }
 
@@ -206,7 +196,7 @@ public class MainContentPanel extends CustomPanel {
         // System.out.println("Raw client.openGames data: " + client.openGames);  // Debugging output
 
         grid.refresh();
-        
+
         if (client.OPPONENTS_TURN) {
             gameStatusLabel.setText("Opponents turn!");
         } else {
@@ -218,7 +208,7 @@ public class MainContentPanel extends CustomPanel {
             openGamesList.setListData(new String[0]);
         } else {
             String[] rawGames = client.openGames.split("\n");
-            
+
             if (previousRawGames == null) {
                 previousRawGames = new String[0];
             }
@@ -241,7 +231,7 @@ public class MainContentPanel extends CustomPanel {
                     formattedGames[i] = " "; //set the box to nothing the format isnt right i.e if there is no host name
                 }
             }
-            
+
             if (rawGames.length != previousRawGames.length) {
                 openGamesList.setListData(formattedGames);
             }
@@ -255,9 +245,9 @@ public class MainContentPanel extends CustomPanel {
     private void startTimer() {
         // Remaining time is 15 minutes
         //remainingTime = 1 * 15;
-        
+
         //commented out as longer duration
-          remainingTime =15*60;
+        remainingTime = 15 * 60;
 
         // Create a timer that updates every second
         timer = new Timer(1000, e -> {
@@ -271,27 +261,26 @@ public class MainContentPanel extends CustomPanel {
             String time = String.format("%02d:%02d", minutes, seconds);
 
             gameTimerLabel.setText(time);
-            
+
             if (client.NUM_OF_MOVES >= 2) {
                 timer.restart();
                 timer.stop();
-                
-                
+
             }
 
             if (remainingTime <= 0) {
                 timer.stop();
                 gameTimerLabel.setText("No opponent, please try again");
-                
+
                 //currently the game deletes when noone joins, however when the user makes a move and waits the game does not delete and is 
                 //still present in the list of games           
                 String deleteGame = client.proxy.deleteGame(Integer.parseInt(client.GID), Integer.parseInt(client.UID));
-                
+
                 System.out.println(deleteGame);
                 client.resetGame();
                 client.showPanel(new MainContentPanel(client));
                 refresh();
-              
+
             }
         });
         timer.start();

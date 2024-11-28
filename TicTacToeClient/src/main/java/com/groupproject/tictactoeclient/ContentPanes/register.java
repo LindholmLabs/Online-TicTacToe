@@ -65,6 +65,7 @@ public class register extends CustomPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 client.UID = client.proxy.register(usernameField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText());
+                client.username = usernameField.getText(); 
                 System.out.println(client.UID);
                 client.showPanel(new MainContentPanel(client));
             }
