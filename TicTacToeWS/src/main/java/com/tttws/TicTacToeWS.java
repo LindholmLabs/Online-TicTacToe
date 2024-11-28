@@ -14,7 +14,7 @@ import jakarta.jws.soap.SOAPBinding;
 
 /**
  *
- * @author adam
+ * @author petar
  */
 
 @WebService(serviceName = "TicTacToeWebService")
@@ -370,6 +370,8 @@ public class TicTacToeWS {
         try {
             String result = dao.retrieve(sqlCmd);
             if(result.equals("1")) {
+                sqlCmd = "DELETE FROM moves WHERE gID = " + gid + ";"; // delete moves first
+                result = dao.remove(sqlCmd);                      // run the SQL statement 
                 sqlCmd = "DELETE FROM games WHERE autokey = " + gid + ";";
                 result = dao.remove(sqlCmd);
                 return "1";
@@ -389,7 +391,6 @@ public class TicTacToeWS {
      */
     @WebMethod(operationName = "showMyOpenGames")
     public String showMyOpenGames(@WebParam(name = "uid") int uid) {
-        System.out.println("Called showMyOpenGames()");
         String sqlCmd = "SELECT g.autokey, u.username, g.started FROM games g, users u WHERE g.p1 = " + uid + " AND g.p2 IS NULL AND g.p1 = u.autokey ORDER BY g.started ASC;";
         try {
             String result = dao.retrieve(sqlCmd);

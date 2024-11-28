@@ -163,23 +163,48 @@ public class MainContentPanel extends CustomPanel {
 
         });
 
-//        //forfeit button action listener 
-//        forfeitButton.addActionListener(e -> {
-//            if(client.UID.equals(client.HOST_UID))
-//            {
-//                client.proxy.setGameState(Integer.parseInt(client.GID), 2);
-//                
-//                
-//            } 
-//            else 
-//            { 
-//                client.proxy.setGameState(Integer.parseInt(client.GID), 1);
-//            }
-//            
-//            
-//            refresh();  // refresh the list to show if there is a new game added
-//        });
-//        
+
+        //forfeit button action listener 
+        forfeitButton.addActionListener(e -> {
+            if(client.UID.equals(client.HOST_UID))
+            {
+                client.proxy.setGameState(Integer.parseInt(client.GID), 2);
+                
+               
+           } 
+            else 
+            { 
+               client.proxy.setGameState(Integer.parseInt(client.GID), 1);
+            }
+            
+           
+            refresh();  // refresh the list to show if there is a new game added
+        });
+        
+
+        
+        
+        //forfeit button action listener 
+        forfeitButton.addActionListener(e -> {
+            if(client.UID.equals(client.HOST_UID))
+            {
+                client.proxy.setGameState(Integer.parseInt(client.GID), 2);
+                
+            }            
+            else 
+            { 
+                client.proxy.setGameState(Integer.parseInt(client.GID), 1);
+            }
+            
+            client.resetGame();
+            client.showPanel(new MainContentPanel(client));
+            refresh();
+           
+        });
+        
+        
+
+
         scoreButton.addActionListener(e -> {
             client.showPanel(new score(client));
             
