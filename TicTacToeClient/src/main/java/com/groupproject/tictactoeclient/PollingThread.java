@@ -91,6 +91,36 @@ public class PollingThread implements Runnable {
                             JOptionPane.showMessageDialog(client.frame, "Error checking the game status.");
 
                     }
+                    
+                    
+                    //call the web server to check if the game has been won or not yet if the player is forfeiting
+                        String gameState = client.proxy.getGameState(Integer.parseInt(client.GID));
+                        switch (gameState) {
+                        
+
+                        case "1":
+                            // Player 1 wins
+                            JOptionPane.showMessageDialog(client.frame, "The other player has forfeited, you win");
+                            
+                            helperMethods.showOptions();
+                            gameOver = true;
+                            break;
+                        case "2":
+                            // Player 2 wins
+                            JOptionPane.showMessageDialog(client.frame, "The other player has forfeited, you win");
+                            
+                            helperMethods.showOptions();
+                            gameOver = true;
+                            break;
+                        case "3":
+                            // Player 2 wins
+                            JOptionPane.showMessageDialog(client.frame, "It's a draw!");
+                            
+                            helperMethods.showOptions();
+                            gameOver = true;
+                            break;
+                        }
+                    
                 //}
 
             } catch (Exception e) {
