@@ -297,8 +297,6 @@ public class MainContentPanel extends CustomPanel {
                 timer.stop();
                 gameTimerLabel.setText("No opponent, please try again");
 
-                //currently the game deletes when noone joins, however when the user makes a move and waits the game does not delete and is 
-                //still present in the list of games           
                 String deleteGame = client.proxy.deleteGame(Integer.parseInt(client.GID), Integer.parseInt(client.UID));
 
                 System.out.println(deleteGame);
