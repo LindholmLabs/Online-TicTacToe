@@ -73,7 +73,7 @@ public class HelperMethods {
             
         String[] options = {"Main Menu", "Quit"};
 
-            // Display an option dialog with custom options
+        // Display an option dialog with custom options
         // The user's choice is stored in the 'choice'
         // variable
         int choice = JOptionPane.showOptionDialog(
@@ -91,15 +91,13 @@ public class HelperMethods {
         // corresponding message
         if (choice == JOptionPane.YES_OPTION) {
             // If the user chose 'Yes'
-            // show a message indicating that they are
-            // proceeding
+            // reset their game and put them back to the main menu
             client.resetGame();
             client.showPanel(new MainContentPanel(client));
         }
         else if (choice == JOptionPane.NO_OPTION) {
             // If the user chose 'No'
-            // show a message indicating that they are not
-            // proceeding
+            // quit the application
             
             System.exit(0);
         }

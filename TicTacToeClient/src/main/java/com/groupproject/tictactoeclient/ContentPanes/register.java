@@ -196,14 +196,6 @@ public class register extends CustomPanel {
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
     }
 
     @Override
