@@ -271,6 +271,9 @@ public class MainContentPanel extends CustomPanel {
             if (client.NUM_OF_MOVES >= 2) {
                 timer.restart();
                 timer.stop();
+              String time2 = String.format("15m 0s");
+              gameTimerLabel.setText(time2);
+
 
             }
 
