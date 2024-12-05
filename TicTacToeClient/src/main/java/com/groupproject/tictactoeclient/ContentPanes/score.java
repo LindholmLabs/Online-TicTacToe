@@ -44,7 +44,7 @@ public class score extends CustomPanel {
         });
 
         try {
-            String leagueData = client.proxy.leagueTable();
+            String leagueData = client.proxy.leagueTable(); //stores our leagueTable data into leagueData variable
             System.out.println("League Data: " + leagueData);
 
             // Check if the response indicates no games or a database error
@@ -58,27 +58,28 @@ public class score extends CustomPanel {
 
             // Prepare header for stats
             StringBuilder statsBuilder = new StringBuilder();
-            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));
+            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws")); //headers for the user, wins, losses and draws
             statsBuilder.append("-".repeat(50)).append("\n");
 
             // Process league data
-            String[] games = leagueData.split("\n");
-            int wins = 0;
+            String[] games = leagueData.split("\n"); // splits the league data into its diffrent games
+            //counters for the wins, losses and draws
+            int wins = 0; 
             int losses = 0;
             int draws = 0;
 
             for (String game : games) {
                 try {
-                    String[] columns = game.split(",");
+                    String[] columns = game.split(","); //splits each game into player1s ID, Player2s ID and the game state
                     if (columns.length < 4) {
                         throw new IllegalArgumentException("Malformed row: " + game);
                     }
-
+                    //split game stores the users ID and the game state
                     String player1UID = columns[1].trim();
                     String player2UID = columns[2].trim();
                     String gameState = columns[3].trim();
-                    int gameStateInt = Integer.parseInt(gameState);
-
+                    int gameStateInt = Integer.parseInt(gameState); //turns game state into an int for if statments
+                    //checks the game state and assigns a win, loss or draw for a user
                     if (player1UID.equals(client.username)) {
                         if (gameStateInt == 1) { // Player 1 wins
                             wins++;
@@ -104,7 +105,7 @@ public class score extends CustomPanel {
             }
 
             // Add the user's stats to the output
-            statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", client.username, wins, losses, draws));
+            statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", client.username, wins, losses, draws)); //prints out all the wins, losses and draws for a user
 
             // Set the stats to the JTextArea
             statsArea.setText(statsBuilder.toString());

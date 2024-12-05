@@ -136,7 +136,7 @@ public class register extends CustomPanel {
                     JOptionPane.showMessageDialog(client.frame, "Please fill in all fields");
                     return;
                 }
-
+                // stores
                 String response = client.proxy.register(usernameTextField.getText(), passwordTextField.getText(), nameTextField.getText(), surnameTextField.getText());
                 System.out.println(response);
 

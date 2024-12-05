@@ -58,13 +58,13 @@ public class allscore extends CustomPanel {
             }
 
             // Split the result into rows
-            String[] games = leagueData.split("\n");
-            Map<String, int[]> playerStats = new HashMap<>();
+            String[] games = leagueData.split("\n"); //splits the leagueTable into its games 
+            Map<String, int[]> playerStats = new HashMap<>(); //The variable playerStats is of type Map<String, int[]>
 
            
             for (String game : games) {
                 try {
-                    String[] columns = game.split(","); //mabye change later depending if it shows up
+                    String[] columns = game.split(","); //splits the games into the users ID and the game state
                     if (columns.length < 4) {
                         throw new IllegalArgumentException("Malformed row: " + game);
                     }
@@ -73,7 +73,7 @@ public class allscore extends CustomPanel {
                     String player2UID = columns[2].trim(); // Player 2 UID
                     String gameState = columns[3].trim();  // Game state as a string
 
-                    int gameStateInt = Integer.parseInt(gameState);
+                    int gameStateInt = Integer.parseInt(gameState); //turns game state into an int for if statments
 
                     // update the stats for Player one
                     playerStats.putIfAbsent(player1UID, new int[3]);
@@ -98,17 +98,17 @@ public class allscore extends CustomPanel {
 
             // Build the display string
             StringBuilder statsBuilder = new StringBuilder();
-            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));
+//            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));//headers for cleaner UI
             statsBuilder.append("-".repeat(50)).append("\n");
 
             for (Map.Entry<String, int[]> entry : playerStats.entrySet()) {
-                String username = entry.getKey();
-                int wins = entry.getValue()[0];
+                String username = entry.getKey(); //updates the wins, losses and draws for this specific user
+                int wins = entry.getValue()[0]; 
                 int losses = entry.getValue()[1];
                 int draws = entry.getValue()[2];
-                statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", username, wins, losses, draws));
+                statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", username, wins, losses, draws)); //prints out all the wins losses and draws along with the username
             }
-
+            // Set the stats to the JTextArea
             statsArea.setText(statsBuilder.toString());
 
         } catch (Exception e) {
