@@ -107,7 +107,6 @@ public class login extends CustomPanel {
         //Item listener to check if the showPassword checkbox has been selected
         //If selected show the password and if not display the password as **** normal
         char defaultPassword = passwordTextField.getEchoChar();
-        // Login Button Action - check the entries of the textFields 
         showPassword.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
