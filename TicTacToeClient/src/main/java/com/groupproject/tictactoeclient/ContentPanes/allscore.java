@@ -8,10 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class allscore extends CustomPanel {
+
     public allscore(TicTacToeClient client) {
-        
+
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
@@ -35,9 +35,9 @@ public class allscore extends CustomPanel {
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, this);
 
         // Set constraints for Back Button
-        layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this); 
+        layout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.WEST, backButton, 10, SpringLayout.WEST, this);
-        
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +61,6 @@ public class allscore extends CustomPanel {
             String[] games = leagueData.split("\n"); //splits the leagueTable into its games 
             Map<String, int[]> playerStats = new HashMap<>(); //The variable playerStats is of type Map<String, int[]>
 
-           
             for (String game : games) {
                 try {
                     String[] columns = game.split(","); //splits the games into the users ID and the game state
@@ -98,12 +97,12 @@ public class allscore extends CustomPanel {
 
             // Build the display string
             StringBuilder statsBuilder = new StringBuilder();
-//            statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));//headers for cleaner UI
+            // statsBuilder.append(String.format("%-20s %-10s %-10s %-10s\n", "Username", "Wins", "Losses", "Draws"));//headers for cleaner UI
             statsBuilder.append("-".repeat(50)).append("\n");
 
             for (Map.Entry<String, int[]> entry : playerStats.entrySet()) {
                 String username = entry.getKey(); //updates the wins, losses and draws for this specific user
-                int wins = entry.getValue()[0]; 
+                int wins = entry.getValue()[0];
                 int losses = entry.getValue()[1];
                 int draws = entry.getValue()[2];
                 statsBuilder.append(String.format("%-20s %-10d %-10d %-10d\n", username, wins, losses, draws)); //prints out all the wins losses and draws along with the username
