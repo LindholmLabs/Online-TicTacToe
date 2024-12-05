@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * Author: Luke
+ */
 public class allscore extends CustomPanel {
 
     public allscore(TicTacToeClient client) {
@@ -118,6 +122,6 @@ public class allscore extends CustomPanel {
 
     @Override
     public void refresh() {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        // not needed 
     }
 }

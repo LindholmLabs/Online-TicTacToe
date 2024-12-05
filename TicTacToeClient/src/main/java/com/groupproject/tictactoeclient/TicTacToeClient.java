@@ -31,7 +31,6 @@ public class TicTacToeClient {
     public String GID = "";
     public boolean OPPONENTS_TURN = true;
     public int NUM_OF_MOVES = 0;
-    public String UID2;
     public String GID_Temp;
     public String HOST_UID = "";
     public String username;
@@ -88,7 +87,6 @@ public class TicTacToeClient {
     public void resetGame() {
         this.BOARD = null;
         this.GID = "";
-        this.UID2 = null;
         this.HOST_UID = "";
         this.NUM_OF_MOVES = 0;
 
@@ -99,7 +97,6 @@ public class TicTacToeClient {
     public void logout() {
         this.UID = null;
         this.GID = "";
-        this.UID2 = null;
         this.HOST_UID = "";
         this.NUM_OF_MOVES = 0;
         this.BOARD = new int[2][2];

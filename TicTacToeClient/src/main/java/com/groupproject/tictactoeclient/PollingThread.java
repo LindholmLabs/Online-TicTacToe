@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Willi
+ * @author William
  */
 public class PollingThread implements Runnable {
 
@@ -26,6 +26,11 @@ public class PollingThread implements Runnable {
         helperMethods = new HelperMethods(client);
     }
 
+    /**
+     * TicTacToe polling thread.
+     * Calls on TicTacToeClient to update the currently open CustomPanel, extending JPanel
+     * Also used to periodically fetch new data from server (once per second)
+     */
     @Override
     public void run() {
         while (true) {
@@ -56,8 +61,6 @@ public class PollingThread implements Runnable {
                 String result = client.proxy.checkWin(Integer.parseInt(client.GID));
                 System.out.println("checkWin: " + result);
                 //if the game is not over check the result of the game
-                //if (!gameOver) {
-                System.out.println("gameOver not working");
                 switch (result) {
 
                     case "1":

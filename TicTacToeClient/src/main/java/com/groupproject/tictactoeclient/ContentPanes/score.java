@@ -6,7 +6,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+/**
+ *
+ * Author: Luke
+ */
 public class score extends CustomPanel {
+
     public score(TicTacToeClient client) {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
@@ -64,7 +70,7 @@ public class score extends CustomPanel {
             // Process league data
             String[] games = leagueData.split("\n"); // splits the league data into its diffrent games
             //counters for the wins, losses and draws
-            int wins = 0; 
+            int wins = 0;
             int losses = 0;
             int draws = 0;
 
@@ -118,6 +124,6 @@ public class score extends CustomPanel {
 
     @Override
     public void refresh() {
-        // Not supported yet
+        // Not needed
     }
 }

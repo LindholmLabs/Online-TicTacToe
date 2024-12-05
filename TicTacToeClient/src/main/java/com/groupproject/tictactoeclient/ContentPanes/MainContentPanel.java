@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ *
+ * @author William
+ */
 public class MainContentPanel extends CustomPanel {
 
     TicTacToeClient client;
@@ -33,7 +37,6 @@ public class MainContentPanel extends CustomPanel {
         JButton forfeitButton = new JButton("Forfeit Game");
         JButton logoutButton = new JButton("Logout");
 
-        
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
         grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
@@ -109,7 +112,6 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
 
-        
         openGamesList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
                 String selectedGame = openGamesList.getSelectedValue();
@@ -162,7 +164,7 @@ public class MainContentPanel extends CustomPanel {
             if (client.GID_Temp != null) {
                 if (!client.UID.equals(client.HOST_UID)) {
                     client.resetGame();
-                    client.UID2 = client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
+                    client.proxy.joinGame(Integer.parseInt(client.UID), Integer.parseInt(client.GID_Temp));
                     client.GID = client.GID_Temp;
                     client.HOST_UID = "";
                 }
@@ -182,47 +184,40 @@ public class MainContentPanel extends CustomPanel {
 
         });
 
-        
-        
         //forfeit button action listener 
         forfeitButton.addActionListener(e -> {
             //If the user is also the host 
-            if(client.UID.equals(client.HOST_UID))
-            {
+            if (client.UID.equals(client.HOST_UID)) {
                 //Set the game state to 2 indicating that player 2 has won
                 client.proxy.setGameState(Integer.parseInt(client.GID), 2);
-                
-            }            
-            else 
-            { 
+
+            } else {
                 //Set the game state to 1 indicating that player 1 has won 
                 client.proxy.setGameState(Integer.parseInt(client.GID), 1);
             }
-            
+
             //Reset the game for the user after pressing forfeit
             client.resetGame();
             //Go back to the main menu 
             client.showPanel(new MainContentPanel(client));
             refresh();
-           
+
         });
-        
-        
 
         //Score button 
         scoreButton.addActionListener(e -> {
-            
+
             //Go to the clients score page
             client.showPanel(new score(client));
-            
+
         });
 
         //leaderboard button
         allscoreButton.addActionListener(e -> {
-            
+
             //Go to the leaderboard page
             client.showPanel(new allscore(client));
-            
+
         });
     }
 
@@ -287,57 +282,56 @@ public class MainContentPanel extends CustomPanel {
         remainingTime = 15 * 60;
 
         // timer that updates every second
-        timer = new Timer(1000,new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            
-            //countdown remaining timer
-            remainingTime--;
 
-            //Minutes
-            int minutes = remainingTime / 60;
-            
-            //seconds
-            int seconds = remainingTime % 60;
+                //countdown remaining timer
+                remainingTime--;
 
-            //Format the time 
-            String time = String.format("%02d:%02d", minutes, seconds);
+                //Minutes
+                int minutes = remainingTime / 60;
 
-            //Update the game timer label on main content page with time 
-            gameTimerLabel.setText(time);
+                //seconds
+                int seconds = remainingTime % 60;
 
-            //Check if theres been 2 moves
-            if (client.NUM_OF_MOVES >= 2) {
-                //if there has stop the timer 
-                timer.restart();
-                timer.stop();
-              String time2 = String.format("15m 0s");
-              gameTimerLabel.setText(time2);
+                //Format the time 
+                String time = String.format("%02d:%02d", minutes, seconds);
 
+                //Update the game timer label on main content page with time 
+                gameTimerLabel.setText(time);
 
+                //Check if theres been 2 moves
+                if (client.NUM_OF_MOVES >= 2) {
+                    //if there has stop the timer 
+                    timer.restart();
+                    timer.stop();
+                    String time2 = String.format("15m 0s");
+                    gameTimerLabel.setText(time2);
+
+                }
+
+                //If the remaining time reaches 0 
+                if (remainingTime <= 0) {
+
+                    //Stop the timer 
+                    timer.stop();
+                    gameTimerLabel.setText("No opponent, please try again");
+
+                    //delete the game using WS deleteGame()
+                    String deleteGame = client.proxy.deleteGame(Integer.parseInt(client.GID), Integer.parseInt(client.UID));
+
+                    System.out.println(deleteGame);
+                    //Reset the game 
+                    client.resetGame();
+
+                    //Put user back into main menu 
+                    client.showPanel(new MainContentPanel(client));
+                    refresh();
+
+                }
             }
 
-            //If the remaining time reaches 0 
-            if (remainingTime <= 0) {
-                
-                //Stop the timer 
-                timer.stop();
-                gameTimerLabel.setText("No opponent, please try again");
-
-                //delete the game using WS deleteGame()
-                String deleteGame = client.proxy.deleteGame(Integer.parseInt(client.GID), Integer.parseInt(client.UID));
-
-                System.out.println(deleteGame);
-                //Reset the game 
-                client.resetGame();
-                
-                //Put user back into main menu 
-                client.showPanel(new MainContentPanel(client));
-                refresh();
-
-            }
-          }
-        
         });
         //start timer 
         timer.start();

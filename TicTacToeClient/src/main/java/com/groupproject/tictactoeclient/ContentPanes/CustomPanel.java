@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Willi
+ * @author William
  */
 public abstract class CustomPanel extends JPanel {
     public abstract void refresh();

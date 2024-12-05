@@ -141,20 +141,16 @@ public class register extends CustomPanel {
                 String response = client.proxy.register(usernameTextField.getText(), passwordTextField.getText(), nameTextField.getText(), surnameTextField.getText());
                 System.out.println(response);
 
-
                 //check if the username already exists, if not allow user to register
                 if ("ERROR-REPEAT".equals(response)) {
                     JOptionPane.showMessageDialog(client.frame, "User already exists");
                     return;
                 } else {
 
-
                     //register the user and assign a User id to the client
                     client.UID = response;
                     //stores the username 
                     client.username = usernameTextField.getText();
-                     
-                    
 
                     System.out.println("Client.UID = " + client.UID);
                     //once registered move to the main panel
@@ -189,6 +185,6 @@ public class register extends CustomPanel {
 
     @Override
     public void refresh() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // not needed
     }
 }
