@@ -61,6 +61,7 @@ public class MainContentPanel extends CustomPanel {
         add(forfeitButton);
         add(logoutButton);
 
+        //create button constraint
         layout.putConstraint(SpringLayout.WEST, createGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, createGameButton, 10, SpringLayout.NORTH, this);
 
@@ -68,25 +69,30 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.EAST, forfeitButton, -160, SpringLayout.EAST, grid);
         layout.putConstraint(SpringLayout.SOUTH, forfeitButton, -20, SpringLayout.SOUTH, this);
 
+        //leaderboard constraint
         layout.putConstraint(SpringLayout.WEST, allscoreButton, 20, SpringLayout.EAST, createGameButton);
         layout.putConstraint(SpringLayout.NORTH, allscoreButton, 0, SpringLayout.NORTH, createGameButton);
 
+        //Open games constraint
         layout.putConstraint(SpringLayout.WEST, openGamesScrollPane, 0, SpringLayout.WEST, createGameButton);
         layout.putConstraint(SpringLayout.EAST, openGamesScrollPane, 0, SpringLayout.EAST, allscoreButton);
         layout.putConstraint(SpringLayout.NORTH, openGamesScrollPane, 10, SpringLayout.SOUTH, createGameButton);
         layout.putConstraint(SpringLayout.SOUTH, openGamesScrollPane, -10, SpringLayout.NORTH, joinGameButton);
 
+        //Join game button constraint
         layout.putConstraint(SpringLayout.WEST, joinGameButton, 20, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.SOUTH, joinGameButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, joinGameButton, 0, SpringLayout.EAST, allscoreButton);
 
+        //game status label constraint
         layout.putConstraint(SpringLayout.WEST, gameStatusLabel, 0, SpringLayout.WEST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameStatusLabel, -20, SpringLayout.NORTH, grid);
 
-        //Username label 
+        //current game label constraint
         layout.putConstraint(SpringLayout.WEST, currentGameLabel, 0, SpringLayout.WEST, grid);
         layout.putConstraint(SpringLayout.NORTH, currentGameLabel, -35, SpringLayout.NORTH, grid);
 
+        //game timer label constraints
         layout.putConstraint(SpringLayout.EAST, gameTimerLabel, 0, SpringLayout.EAST, grid);
         layout.putConstraint(SpringLayout.NORTH, gameTimerLabel, -20, SpringLayout.NORTH, grid);
 
@@ -95,12 +101,15 @@ public class MainContentPanel extends CustomPanel {
         layout.putConstraint(SpringLayout.SOUTH, grid, 240, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.EAST, grid, -20, SpringLayout.EAST, this);
 
+        //logout button constraint
         layout.putConstraint(SpringLayout.SOUTH, logoutButton, -80, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, logoutButton, -20, SpringLayout.EAST, this);
 
+        //score button constraint
         layout.putConstraint(SpringLayout.SOUTH, scoreButton, -20, SpringLayout.SOUTH, this);
         layout.putConstraint(SpringLayout.EAST, scoreButton, -20, SpringLayout.EAST, this);
 
+        
         openGamesList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && openGamesList.getSelectedValue() != null) {
                 String selectedGame = openGamesList.getSelectedValue();
@@ -277,7 +286,7 @@ public class MainContentPanel extends CustomPanel {
         //commented out as longer duration
         remainingTime = 15 * 60;
 
-        // Create a timer that updates every second
+        // timer that updates every second
         timer = new Timer(1000,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

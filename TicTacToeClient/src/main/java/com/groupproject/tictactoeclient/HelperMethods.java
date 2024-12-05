@@ -73,10 +73,8 @@ public class HelperMethods {
     public void showOptions() {
             
         String[] options = {"Main Menu", "Quit"};
-
-        // Display an option dialog with custom options
-        // The user's choice is stored in the 'choice'
-        // variable
+        // Display an option dialog 
+        // The user's choice is stored in the 'choice' variable
         int choice = JOptionPane.showOptionDialog(
             null, // Parent component (null means center on screen)
             "Options", // Message to display
@@ -88,8 +86,7 @@ public class HelperMethods {
             options[0] // Initial selection (default is "Cancel")
         );
 
-        // Check the user's choice and display a
-        // corresponding message
+        // Check the user's choice and display a corresponding message
         if (choice == JOptionPane.YES_OPTION) {
             // If the user chose 'Yes'
             // reset their game and put them back to the main menu
@@ -98,8 +95,7 @@ public class HelperMethods {
         }
         else if (choice == JOptionPane.NO_OPTION) {
             // If the user chose 'No'
-            // quit the application
-            
+            // quit the application        
             System.exit(0);
         }
         else {

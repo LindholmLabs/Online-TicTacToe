@@ -52,7 +52,7 @@ public class register extends CustomPanel {
         //Create a checkbox to show the password
         JCheckBox showPassword = new JCheckBox("show password");
 
-        //Create error message if login is not correct
+        //Create error message if register is not correct
         JLabel registerErrorLabel = new JLabel("User is already created");
         registerErrorLabel.setForeground(Color.red);
         registerErrorLabel.setVisible(false);
@@ -136,9 +136,11 @@ public class register extends CustomPanel {
                     JOptionPane.showMessageDialog(client.frame, "Please fill in all fields");
                     return;
                 }
+
                 // stores the UID in responce and stores it as a global variable
                 String response = client.proxy.register(usernameTextField.getText(), passwordTextField.getText(), nameTextField.getText(), surnameTextField.getText());
                 System.out.println(response);
+
 
                 //check if the username already exists, if not allow user to register
                 if ("ERROR-REPEAT".equals(response)) {
@@ -146,9 +148,16 @@ public class register extends CustomPanel {
                     return;
                 } else {
 
+
+                    //register the user and assign a User id to the client
                     client.UID = response;
-                    client.username = usernameTextField.getText();// stores the username as a global
+                    //stores the username 
+                    client.username = usernameTextField.getText();
+                     
+                    
+
                     System.out.println("Client.UID = " + client.UID);
+                    //once registered move to the main panel
                     client.showPanel(new MainContentPanel(client));
                 }
             }
@@ -157,19 +166,18 @@ public class register extends CustomPanel {
 
         //Item listener to check if the showPassword checkbox has been selected
         //If selected show the password and if not display the password as **** normal
-        char defaultPassword = passwordTextField.getEchoChar();
-        // Login Button Action - check the entries of the textFields 
+        char userPassword = passwordTextField.getEchoChar();
         showPassword.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     passwordTextField.setEchoChar((char) 0);
                 } else {
-                    passwordTextField.setEchoChar(defaultPassword);
+                    passwordTextField.setEchoChar(userPassword);
                 }
             }
         });
 
-        // Back button listener
+        // Back button listener - go back to the start panel 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
