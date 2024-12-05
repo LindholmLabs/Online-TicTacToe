@@ -33,6 +33,7 @@ public class MainContentPanel extends CustomPanel {
         JButton forfeitButton = new JButton("Forfeit Game");
         JButton logoutButton = new JButton("Logout");
 
+        
         openGamesList = new JList<>();
         JScrollPane openGamesScrollPane = new JScrollPane(openGamesList);
         grid = new TicTacToeGrid(client, 3, 3); // A 3x3 TicTacToe grid
@@ -41,8 +42,10 @@ public class MainContentPanel extends CustomPanel {
         currentGameLabel = new JLabel();
         JButton scoreButton = new JButton("View Personal Score");
 
+        //For each user display their respective username on the main content panel
         client.frame.setTitle("TicTacToe - Welcome " + client.username);
 
+        //Set the game timer label to 15m
         gameTimerLabel.setText("15m 0s");
 
         // Add buttons to panel
@@ -116,16 +119,21 @@ public class MainContentPanel extends CustomPanel {
             }
         });
 
+        //Create new game button
         createGameButton.addActionListener(e -> {
+            //If the user is already in a game they cannot create a new game
             if (!client.HOST_UID.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "You cannot create a new game since you already have one.", "NOO.", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
+            //call the WS to create a new game using the client UID (user id)
             client.GID = client.proxy.newGame(Integer.parseInt(client.UID));
 
             if (client.GID != null && !client.GID.isEmpty()) {
+                //assign the user's UID to the HOST User id 
                 client.HOST_UID = client.UID;
+                //The user must move first
                 client.OPPONENTS_TURN = false;
                 String newGameData = "Game " + client.GID + " Host: " + client.UID;
                 if (client.openGames == null || client.openGames.isEmpty()) {
@@ -134,8 +142,10 @@ public class MainContentPanel extends CustomPanel {
                     client.openGames += "\n" + newGameData;  //seperates each new game
                 }
             }
+            //Start the timer - as per assignment specification
             startTimer();
-            refresh();  // refresh the list to show if there is a new game added
+            // refresh the list to show if there is a new game added
+            refresh();
         });
 
         joinGameButton.addActionListener(e -> {
@@ -167,17 +177,22 @@ public class MainContentPanel extends CustomPanel {
         
         //forfeit button action listener 
         forfeitButton.addActionListener(e -> {
+            //If the user is also the host 
             if(client.UID.equals(client.HOST_UID))
             {
+                //Set the game state to 2 indicating that player 2 has won
                 client.proxy.setGameState(Integer.parseInt(client.GID), 2);
                 
             }            
             else 
             { 
+                //Set the game state to 1 indicating that player 1 has won 
                 client.proxy.setGameState(Integer.parseInt(client.GID), 1);
             }
             
+            //Reset the game for the user after pressing forfeit
             client.resetGame();
+            //Go back to the main menu 
             client.showPanel(new MainContentPanel(client));
             refresh();
            
@@ -185,13 +200,18 @@ public class MainContentPanel extends CustomPanel {
         
         
 
-
+        //Score button 
         scoreButton.addActionListener(e -> {
+            
+            //Go to the clients score page
             client.showPanel(new score(client));
             
         });
 
+        //leaderboard button
         allscoreButton.addActionListener(e -> {
+            
+            //Go to the leaderboard page
             client.showPanel(new allscore(client));
             
         });
@@ -249,26 +269,37 @@ public class MainContentPanel extends CustomPanel {
     }
 
     private void startTimer() {
-        // Remaining time is 15 minutes
+        //Remaining time is 15 minutes
+        //After 15 minutes the game should delete if nobody has joined
+        //Can comment out the line below for testing as its onlt 15 seconds 
         //remainingTime = 1 * 15;
 
         //commented out as longer duration
         remainingTime = 15 * 60;
 
         // Create a timer that updates every second
-        timer = new Timer(1000, e -> {
-            // Countdown time
-            timer.start();
+        timer = new Timer(1000,new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            
+            //countdown remaining timer
             remainingTime--;
 
+            //Minutes
             int minutes = remainingTime / 60;
+            
+            //seconds
             int seconds = remainingTime % 60;
 
+            //Format the time 
             String time = String.format("%02d:%02d", minutes, seconds);
 
+            //Update the game timer label on main content page with time 
             gameTimerLabel.setText(time);
 
+            //Check if theres been 2 moves
             if (client.NUM_OF_MOVES >= 2) {
+                //if there has stop the timer 
                 timer.restart();
                 timer.stop();
               String time2 = String.format("15m 0s");
@@ -277,19 +308,29 @@ public class MainContentPanel extends CustomPanel {
 
             }
 
+            //If the remaining time reaches 0 
             if (remainingTime <= 0) {
+                
+                //Stop the timer 
                 timer.stop();
                 gameTimerLabel.setText("No opponent, please try again");
 
+                //delete the game using WS deleteGame()
                 String deleteGame = client.proxy.deleteGame(Integer.parseInt(client.GID), Integer.parseInt(client.UID));
 
                 System.out.println(deleteGame);
+                //Reset the game 
                 client.resetGame();
+                
+                //Put user back into main menu 
                 client.showPanel(new MainContentPanel(client));
                 refresh();
 
             }
+          }
+        
         });
+        //start timer 
         timer.start();
     }
 }

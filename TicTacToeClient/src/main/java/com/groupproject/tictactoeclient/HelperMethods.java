@@ -46,6 +46,7 @@ public class HelperMethods {
         return GetBoard(Integer.parseInt(client.GID));
     }
     
+    //Checks if the client is the Host or not 
     public boolean IsHost() {
         return client.UID.equals(client.HOST_UID);
     }

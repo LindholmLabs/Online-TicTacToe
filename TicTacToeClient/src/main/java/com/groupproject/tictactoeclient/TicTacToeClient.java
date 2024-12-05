@@ -84,7 +84,7 @@ public class TicTacToeClient {
         CurrentPanel.refresh();
     }
 
-    //reset the game data when user goes back to the main menu 
+    //reset the game data when user goes back to the main menu so the previous game doesnt show up and user can create a new game 
     public void resetGame() {
         this.BOARD = null;
         this.GID = "";
@@ -96,7 +96,7 @@ public class TicTacToeClient {
     }
     
     
-    
+    //used to log the user out and remove their user details
     public void logout(){
         this.UID = null;
         this.GID = "";
