@@ -136,7 +136,7 @@ public class register extends CustomPanel {
                     JOptionPane.showMessageDialog(client.frame, "Please fill in all fields");
                     return;
                 }
-                // stores
+                // stores the UID in responce and stores it as a global variable
                 String response = client.proxy.register(usernameTextField.getText(), passwordTextField.getText(), nameTextField.getText(), surnameTextField.getText());
                 System.out.println(response);
 
@@ -147,7 +147,7 @@ public class register extends CustomPanel {
                 } else {
 
                     client.UID = response;
-                    client.username = usernameTextField.getText();
+                    client.username = usernameTextField.getText();// stores the username as a global
                     System.out.println("Client.UID = " + client.UID);
                     client.showPanel(new MainContentPanel(client));
                 }
